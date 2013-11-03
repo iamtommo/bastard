@@ -14,7 +14,7 @@ public class Application {
 	
 	public void start() {
 		try {
-			JarFile jar = new JarFile("gamepack.jar");
+			JarFile jar = new JarFile("test.jar");
 			
 			for (ZipEntry entry = jar.entries().nextElement(); jar.entries().hasMoreElements();) {
 				InputStream in = jar.getInputStream(entry);
@@ -22,17 +22,11 @@ public class Application {
 				File file = new File(entry.getName());
 				
 				byte[] tmp = new byte[in.available()];
-				System.out.println("size: " + tmp.length);
-				
-				System.out.println("class name: " + file.getName());
 				in.read(tmp, 0, tmp.length);
 				
 				ClassFile cls = new ClassFile(tmp);
 				cls.read();
 			}
-			
-//			ClassFile cf = new ClassFile(new File("Test.class"));
-//			cf.read();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
