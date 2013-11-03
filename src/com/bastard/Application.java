@@ -1,0 +1,53 @@
+package com.bastard;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+
+import com.bastard.cls.ClassFile;
+
+public class Application {
+
+	public Application() {
+	}
+	
+	public void start() {
+		try {
+			JarFile jar = new JarFile("gamepack.jar");
+			
+			for (ZipEntry entry = jar.entries().nextElement(); jar.entries().hasMoreElements();) {
+				InputStream in = jar.getInputStream(entry);
+				
+				File file = new File(entry.getName());
+				
+				byte[] tmp = new byte[in.available()];
+				System.out.println("size: " + tmp.length);
+				
+				System.out.println("class name: " + file.getName());
+				in.read(tmp, 0, tmp.length);
+				
+				ClassFile cls = new ClassFile(tmp);
+				cls.read();
+			}
+			
+//			ClassFile cf = new ClassFile(new File("Test.class"));
+//			cf.read();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		new Application().start();
+	}
+	
+	public static void logerr(String err) {
+		System.out.println("Error: " + err);
+	}
+	
+	public static void log(String msg) {
+		System.out.println(msg);
+	}
+
+}
