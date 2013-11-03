@@ -154,7 +154,7 @@ public enum Opcode {
 	IRETURN(0xAC, BasicInstruction.class),
 	ISHL(0x78, BasicInstruction.class),
 	ISHR(0x7A, BasicInstruction.class),
-	ISTORE(0x36, VariableInstruction.class),
+	ISTORE(0x36, LocalVariableInstruction.class),
 	ISTORE_0(0x3B, BasicInstruction.class),
 	ISTORE_1(0x3C, BasicInstruction.class),
 	ISTORE_2(0x3D, BasicInstruction.class),
