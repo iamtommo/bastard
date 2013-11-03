@@ -4,7 +4,11 @@ import java.nio.ByteBuffer;
 
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
-
+/**
+ * An instruction which manipulates the stack
+ * @author tommo
+ *
+ */
 public class StackInstruction extends Instruction {
 
 	public StackInstruction(int opcode) {
