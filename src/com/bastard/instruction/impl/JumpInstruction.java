@@ -29,7 +29,7 @@ public class JumpInstruction extends Instruction {
 		} else {
 			jumpLocation = code.getShort() & 0xFF;
 		}
-		System.out.println("\t\t\t" + toString());
+		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 	

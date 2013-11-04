@@ -26,6 +26,7 @@ public class ClassFile {
 	/**
 	 * Class file properties
 	 */
+	private String name;
 	private int magic;
 	private int minorVersion;
 	private int majorVersion;
@@ -45,14 +46,17 @@ public class ClassFile {
 	private AttributeInfo[] attributes;
 	
 	public ClassFile(File file) {
+		this.name = file.getName();
 		this.file = file;
 	}
 	
-	public ClassFile(byte[] data) {
+	public ClassFile(String name, byte[] data) {
+		this.name = name;
 		this.data = ByteBuffer.wrap(data);
 	}
 
 	public void read() throws Exception {
+		System.out.println(name+" {");
 		if (data == null && file != null) {
 			readFileData();
 		}
@@ -62,23 +66,23 @@ public class ClassFile {
 		magic |= ((byte) data.get() & 0xBA) << 8;
 		magic |= ((byte) data.get() & 0xBE);
 		if (magic == MAGIC_NUMBER) {
-			Application.log("Magic number: " + Integer.toHexString(magic));
+			Application.log("\tMagic number: " + Integer.toHexString(magic));
 		} else {
-			Application.log("Incorrect magic number: " + Integer.toHexString(magic));
+			Application.log("\tIncorrect magic number: " + Integer.toHexString(magic));
 			throw new Exception();
 		}
 		
 		minorVersion = data.getShort();
-		Application.log("Class minor version: " + minorVersion);
+		Application.log("\tClass minor version: " + minorVersion);
 		
 		majorVersion |= data.get() << 8;
 		majorVersion |= data.get();
-		Application.log("Class major version: " + majorVersion);
+		Application.log("\tClass major version: " + majorVersion);
 		
 		//Entries start at index 1 therefore size is always greater than actual entries
 		int cSize = data.getShort();
 		constantPool = new ConstantPool(cSize);
-		Application.log("Constant pool size: " + cSize);
+		Application.log("\tConstant pool size: " + cSize);
 		
 		for (int ind = 0; ind < constantPool.getSize() - 1;) {
 			byte tag = data.get();
@@ -108,16 +112,16 @@ public class ClassFile {
 		
 		int iTableSize = data.getShort();
 		interfaceTable = new int[iTableSize];
-		System.out.println("Interface table size: " + iTableSize);
+		System.out.println("\tInterface table size: " + iTableSize);
 		for (int i = 0; i < interfaceTable.length; i++) {
 			int iPoolIndex = data.getShort();
 			interfaceTable[i] = iPoolIndex;
-			System.out.println("\tInterface pool index: " + iPoolIndex);
+			System.out.println("\t\tInterface pool index: " + iPoolIndex);
 		}
 		
 		int fieldTableSize = data.getShort();
 		fieldTable = new FieldInfo[fieldTableSize];
-		System.out.println("Field table size: " + fieldTableSize);
+		System.out.println("\tField table size: " + fieldTableSize);
 		for (int i = 0; i < fieldTable.length; i++) {
 			FieldInfo fi = new FieldInfo().read(constantPool, data);
 			fieldTable[i] = fi;
@@ -125,7 +129,7 @@ public class ClassFile {
 		
 		int methodTableSize = data.getShort();
 		methodTable = new MethodInfo[methodTableSize];
-		System.out.println("Method table size: " + methodTableSize);
+		System.out.println("\tMethod table size: " + methodTableSize);
 		for (int i = 0; i < methodTable.length; i++) {
 			MethodInfo mi = new MethodInfo().read(constantPool, data);
 			methodTable[i] = mi;
@@ -133,12 +137,13 @@ public class ClassFile {
 		
 		attributesCount = data.getShort();
 		attributes = new AttributeInfo[attributesCount];
-		System.out.println("Class attributes count: " + attributesCount);
+		System.out.println("\tClass attributes count: " + attributesCount);
 		for (int i = 0; i < attributes.length; i++) {
 			AttributeInfo ai = new AttributeInfo().read(constantPool, data);
 			attributes[i] = ai;
-			System.out.println("\t" + ai.toString());
+			System.out.println("\t\t" + ai.toString());
 		}
+		System.out.println("}\n");
 	}
 	
 	private void readFileData() {

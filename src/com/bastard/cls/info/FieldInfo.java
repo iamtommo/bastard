@@ -29,7 +29,7 @@ public class FieldInfo implements Info {
 		descriptorIndex = data.getShort();
 		attributesCount = data.getShort();
 		attributes = new AttributeInfo[attributesCount];
-		System.out.println("\t" + toString());
+		System.out.println("\t\t" + toString());
 		for (int i = 0; i < attributesCount; i++) {
 			AttributeInfo ai = new AttributeInfo().read(pool, data);
 			attributes[i] = ai;

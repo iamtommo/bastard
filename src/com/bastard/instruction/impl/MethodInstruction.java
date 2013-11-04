@@ -30,7 +30,7 @@ public class MethodInstruction extends Instruction {
 		} else {
 			methodIndex = code.getShort();
 		}
-		System.out.println("\t\t\t" + toString());
+		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 

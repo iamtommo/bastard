@@ -3,7 +3,6 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.instruction.Instruction;
-import com.bastard.instruction.Opcode;
 
 public class LocalVariableInstruction extends Instruction {
 

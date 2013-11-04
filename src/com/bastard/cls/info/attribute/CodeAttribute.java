@@ -53,7 +53,7 @@ public class CodeAttribute extends AbstractAttribute {
 			AttributeInfo ai = new AttributeInfo().read(pool, data);
 			attributes[i] = ai;
 		}
-		System.out.println("\t\t" + toString());
+		System.out.println("\t\t\t" + toString());
 		return this;
 	}
 	

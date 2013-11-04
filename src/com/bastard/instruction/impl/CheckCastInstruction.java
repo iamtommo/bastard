@@ -18,7 +18,7 @@ public class CheckCastInstruction extends Instruction {
 	@Override
 	public Instruction read(ByteBuffer code) {
 		classRefIndex = code.getShort();
-		System.out.println("\t\t\t" + toString());
+		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 

@@ -20,7 +20,7 @@ public class BasicInstruction extends Instruction {
 
 	@Override
 	public Instruction read(ByteBuffer code) {
-		System.out.println("\t\t\t" + toString());
+		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 

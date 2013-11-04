@@ -30,7 +30,7 @@ public class VariableInstruction extends Instruction {
 		} else {
 			this.value = code.get();
 		}
-		System.out.println("\t\t\t" + toString());
+		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 	

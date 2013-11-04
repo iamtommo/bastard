@@ -25,7 +25,7 @@ public class FieldInstruction extends Instruction {
 	@Override
 	public FieldInstruction read(ByteBuffer code) {
 		fieldIndex = code.getShort();
-		System.out.println("\t\t\t" + toString());
+		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 	
