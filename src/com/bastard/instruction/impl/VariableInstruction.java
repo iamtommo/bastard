@@ -25,14 +25,18 @@ public class VariableInstruction extends Instruction {
 
 	@Override
 	public VariableInstruction read(ByteBuffer code) {
-		value = code.getShort();
+		if (getOpcode() == Opcode.SIPUSH.getOpcode()) {
+			this.value = code.getShort();
+		} else {
+			this.value = code.get();
+		}
 		System.out.println("\t\t\t" + toString());
 		return this;
 	}
 	
 	@Override
 	public String toString() {
-		return "VariableInstruction[op=" + Opcode.valueOf(getOpcode()).toString() + ", value=" + value + "]";
+		return "VariableInstruction[op=" + Opcode.valueOf(getOpcode() & 0xFF).toString() + ", value=" + value + "]";
 	}
 
 }

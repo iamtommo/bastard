@@ -26,7 +26,11 @@ public class BasicInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return "Instruction[op=" + Opcode.valueOf(getOpcode()).toString() + "]";
+		Opcode opcode = Opcode.valueOf(getOpcode() & 0xFF);
+		if (opcode == null) {
+			return "Instruction[op="+(getOpcode() & 0xFF)+", null]";
+		}
+		return "Instruction[op=" + opcode.toString() + "]";
 	}
 
 }

@@ -139,7 +139,6 @@ public class ClassFile {
 			attributes[i] = ai;
 			System.out.println("\t" + ai.toString());
 		}
-		System.out.println("# Successfully parsed class " + file.getName());
 	}
 	
 	private void readFileData() {

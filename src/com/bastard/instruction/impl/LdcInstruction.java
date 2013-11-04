@@ -29,7 +29,7 @@ public class LdcInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return "LdcInstruction[op=" + Opcode.valueOf(getOpcode()).toString() + ", index=" + constantIndex + "]";
+		return "LdcInstruction[op=" + Opcode.valueOf(getOpcode() & 0xFF).toString() + ", index=" + constantIndex + "]";
 	}
 
 }

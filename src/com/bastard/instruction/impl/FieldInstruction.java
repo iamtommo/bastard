@@ -31,7 +31,11 @@ public class FieldInstruction extends Instruction {
 	
 	@Override
 	public String toString() {
-		return "FieldInstruction[op=" + Opcode.valueOf(getOpcode()).toString() + ", fieldIndex=" + fieldIndex + "]";
+		Opcode opcode = Opcode.valueOf(getOpcode() & 0xFF);
+		if (opcode == null) {
+			return "FieldInstruction[op="+(getOpcode() & 0xFF)+", null]";
+		}
+		return "FieldInstruction[op=" + opcode.toString() + ", fieldIndex=" + fieldIndex + "]";
 	}
 
 }

@@ -22,7 +22,7 @@ public class StackInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return "StackInstruction[op=" + Opcode.valueOf(getOpcode()).toString() + "]";
+		return "StackInstruction[op=" + Opcode.valueOf(getOpcode() & 0xFF).toString() + "]";
 	}
 
 }

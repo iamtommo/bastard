@@ -4,20 +4,23 @@ import java.nio.ByteBuffer;
 
 import com.bastard.instruction.Instruction;
 
-public class ThrowInstruction extends Instruction {
+public class ArrayInstruction extends Instruction {
 
-	public ThrowInstruction(int opcode) {
+	private int typeIndex;
+	
+	public ArrayInstruction(int opcode) {
 		super(opcode);
 	}
 
 	@Override
 	public Instruction read(ByteBuffer code) {
+		this.typeIndex = code.getShort();
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "ThrowInstruction[]";
+		return "ArrayInstruction[typeIndex="+typeIndex+"]";
 	}
 
 }

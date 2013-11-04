@@ -4,20 +4,20 @@ import java.nio.ByteBuffer;
 
 import com.bastard.instruction.Instruction;
 
-public class ThrowInstruction extends Instruction {
+public class TableSwitchInstruction extends Instruction {
 
-	public ThrowInstruction(int opcode) {
+	public TableSwitchInstruction(int opcode) {
 		super(opcode);
 	}
 
 	@Override
 	public Instruction read(ByteBuffer code) {
-		return this;
+		return null;
 	}
 
 	@Override
 	public String toString() {
-		return "ThrowInstruction[]";
+		return null;
 	}
 
 }

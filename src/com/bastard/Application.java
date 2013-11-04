@@ -19,13 +19,13 @@ public class Application {
 			for (ZipEntry entry = jar.entries().nextElement(); jar.entries().hasMoreElements();) {
 				InputStream in = jar.getInputStream(entry);
 				
-				File file = new File(entry.getName());
-				
 				byte[] tmp = new byte[in.available()];
 				in.read(tmp, 0, tmp.length);
 				
 				ClassFile cls = new ClassFile(tmp);
 				cls.read();
+				
+				System.exit(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

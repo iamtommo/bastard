@@ -3,9 +3,10 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.instruction.Instruction;
+import com.bastard.instruction.Opcode;
 
 public class LocalVariableInstruction extends Instruction {
-	
+
 	/**
 	 * The index of the local variable if applicable
 	 */
@@ -17,13 +18,13 @@ public class LocalVariableInstruction extends Instruction {
 
 	@Override
 	public Instruction read(ByteBuffer code) {
-		this.index = code.getShort();
+		this.index = code.get();
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "LocalVariableInstruction[]";
+		return "LocalVariableInstruction[index="+index+"]";
 	}
 
 }

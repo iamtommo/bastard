@@ -12,26 +12,35 @@ import com.bastard.instruction.Opcode;
  *
  */
 public class MethodInstruction extends Instruction {
-	
+
 	/**
 	 * The method reference index in the constant pool.
 	 */
 	private int methodIndex;
-	
+
 	public MethodInstruction(int opcode) {
 		super(opcode);
 	}
 
 	@Override
 	public MethodInstruction read(ByteBuffer code) {
-		methodIndex = code.getShort();
+		if (getOpcode() == Opcode.INVOKEINTERFACE.getOpcode()) {
+			methodIndex = code.getInt();
+		/*|| getOpcode() == Opcode.INVOKEDYNAMIC)*/
+		} else {
+			methodIndex = code.getShort();
+		}
 		System.out.println("\t\t\t" + toString());
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "MethodInstruction[op=" + Opcode.valueOf(getOpcode()).toString() + ", methodIndex=" + methodIndex + "]";
+		Opcode opcode = Opcode.valueOf(getOpcode() & 0xFF);
+		if (opcode == null) {
+			return "MethodInstruction[op="+(getOpcode() & 0xFF)+", null]";
+		}
+		return "MethodInstruction[op=" + opcode.toString() + ", methodIndex=" + methodIndex + "]";
 	}
 
 }

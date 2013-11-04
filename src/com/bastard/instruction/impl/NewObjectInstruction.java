@@ -25,7 +25,11 @@ public class NewObjectInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return "NewObjectInstruction[" + Opcode.valueOf(getOpcode()).toString() + ", index=" + classRefIndex + "]";
+		Opcode opcode = Opcode.valueOf(getOpcode() & 0xFF);
+		if (opcode == null) {
+			return "NewObjectInstruction[op="+(getOpcode() & 0xFF)+", null]";
+		}
+		return "NewObjectInstruction[" + opcode.toString() + ", index=" + classRefIndex + "]";
 	}
 
 }
