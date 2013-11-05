@@ -12,7 +12,7 @@ public class ArithmeticNode extends DoubleEndedNode {
 
 	@Override
 	public String toString() {
-		return "ArithmeticNode[left="+left.getInstruction()+" "+getOperation()+" right="+right.getInstruction()+"]";
+		return "ArithmeticNode[left="+left.getInstruction()+" "+getOperation()+" right="+right.getInstruction()+", parent="+parent+", children="+children.size()+"]";
 	}
 
 	public String getOperation() {

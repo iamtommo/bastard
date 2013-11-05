@@ -25,5 +25,9 @@ public class LocalVariableInstruction extends Instruction {
 	public String toString() {
 		return "LocalVariableInstruction[index="+index+"]";
 	}
+	
+	public int getIndex() {
+		return index;
+	}
 
 }

@@ -2,12 +2,14 @@ package com.bastard.code;
 
 import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.JumpNode;
+import com.bastard.code.impl.LocalVariableNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
 import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
 import com.bastard.instruction.impl.JumpInstruction;
+import com.bastard.instruction.impl.LocalVariableInstruction;
 
 /**
  * Represents a basic node stack machine. This will continue to
@@ -50,6 +52,12 @@ public class Stack {
 				push(new Node(instruction));
 				continue;
 			}
+			
+			if (instruction instanceof LocalVariableInstruction) {
+				push(new LocalVariableNode((LocalVariableInstruction) instruction));
+				continue;
+			}
+			
 
 			if (instruction instanceof ArithmeticInstruction) {
 				Instruction left = instructions.get(i - 2);

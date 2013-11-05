@@ -5,6 +5,7 @@ import com.bastard.instruction.impl.JumpInstruction;
 
 /**
  * 
+ * Represents GOTO, GOTO_W, JSR, and JSR_W jump instructions.
  * @author Shawn Davies
  */
 public class JumpNode extends Node {
@@ -26,6 +27,6 @@ public class JumpNode extends Node {
 	
 	@Override
 	public String toString() {
-		return "JumpNode[dst="+dst+"]";
+		return "JumpNode[dst="+dst+", parent="+parent+", children="+children.size()+"]";
 	}
 }
