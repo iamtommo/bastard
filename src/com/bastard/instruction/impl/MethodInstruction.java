@@ -2,6 +2,7 @@ package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -23,7 +24,7 @@ public class MethodInstruction extends Instruction {
 	}
 
 	@Override
-	public MethodInstruction read(ByteBuffer code) {
+	public MethodInstruction read(ConstantPool pool, ByteBuffer code) {
 		if (getOpcode() == Opcode.INVOKEINTERFACE.getOpcode()) {
 			methodIndex = code.getInt();
 		/*|| getOpcode() == Opcode.INVOKEDYNAMIC)*/

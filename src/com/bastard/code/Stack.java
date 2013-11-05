@@ -47,7 +47,7 @@ public class Stack {
 			Instruction instruction = instructions.get(i);
 
 			if (instruction instanceof BasicInstruction) {
-				push(new Node(instruction));
+				push(new Node(instructions.getConstantPool(), instruction));
 				continue;
 			}
 

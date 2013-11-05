@@ -2,6 +2,7 @@ package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -24,7 +25,7 @@ public class VariableInstruction extends Instruction {
 	}
 
 	@Override
-	public VariableInstruction read(ByteBuffer code) {
+	public VariableInstruction read(ConstantPool pool, ByteBuffer code) {
 		if (getOpcode() == Opcode.SIPUSH.getOpcode()) {
 			this.value = code.getShort();
 		} else {

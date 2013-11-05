@@ -2,6 +2,7 @@ package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -23,7 +24,7 @@ public class FieldInstruction extends Instruction {
 	}
 
 	@Override
-	public FieldInstruction read(ByteBuffer code) {
+	public FieldInstruction read(ConstantPool pool, ByteBuffer code) {
 		fieldIndex = code.getShort();
 		System.out.println("\t\t\t\t" + toString());
 		return this;

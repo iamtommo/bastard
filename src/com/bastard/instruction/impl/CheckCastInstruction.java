@@ -2,6 +2,7 @@ package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 
 public class CheckCastInstruction extends Instruction {
@@ -16,7 +17,7 @@ public class CheckCastInstruction extends Instruction {
 	}
 
 	@Override
-	public Instruction read(ByteBuffer code) {
+	public Instruction read(ConstantPool pool, ByteBuffer code) {
 		classRefIndex = code.getShort();
 		System.out.println("\t\t\t\t" + toString());
 		return this;

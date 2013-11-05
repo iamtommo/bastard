@@ -39,7 +39,7 @@ public class CodeAttribute extends AbstractAttribute {
 		byte[] b = new byte[codeLength];
 		data.get(b);
 		code = ByteBuffer.wrap(b);
-		instructionList.read(code);
+		instructionList.read(pool, code);
 		stack = new Stack(instructionList);
 		stack.print();
 		excTableLength = data.getShort();
