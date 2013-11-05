@@ -115,14 +115,7 @@ public class Stack {
 			push(root);
 			return;
 		}
-
-		if (node instanceof DoublyEndedNode) {
-			DoublyEndedNode de = (DoublyEndedNode) node;
-
-			push(de.getLeft());
-			push(de.getRight());
-		}
-
+		
 		if (node instanceof ArithmeticNode) {// pop off the original left/right nodes
 			stack.pop();
 			stack.pop();
