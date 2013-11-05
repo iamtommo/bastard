@@ -45,6 +45,16 @@ public class Node {
 		children.add(node);
 	}
 	
+	/**
+	 * Makes a new copy of this node.
+	 */
+	public Node clone() {
+		Node clone = new Node(pool, instruction);
+		clone.setParent(parent);
+		clone.children = children;
+		return clone;
+	}
+	
 	public void setParent(Node parent) {
 		this.parent = parent;
 	}
@@ -57,8 +67,8 @@ public class Node {
 		return instruction;
 	}
 	
-	@Override
-	public String toString() {
-		return "Node[instruction="+instruction+", parent="+parent+", children="+children.size()+"]";
+	public String code() {
+		return "Node[instruction="+instruction+", children="+children.size()+"]";
 	}
+	
 }

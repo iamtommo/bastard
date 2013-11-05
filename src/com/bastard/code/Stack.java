@@ -1,17 +1,23 @@
 package com.bastard.code;
 
 import com.bastard.code.impl.ArithmeticNode;
+import com.bastard.code.impl.FieldNode;
 import com.bastard.code.impl.JumpNode;
 import com.bastard.code.impl.LdcNode;
 import com.bastard.code.impl.LocalVariableNode;
+import com.bastard.code.impl.MethodNode;
+import com.bastard.code.impl.PushNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
 import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
+import com.bastard.instruction.impl.FieldInstruction;
 import com.bastard.instruction.impl.JumpInstruction;
 import com.bastard.instruction.impl.LdcInstruction;
 import com.bastard.instruction.impl.LocalVariableInstruction;
+import com.bastard.instruction.impl.MethodInstruction;
+import com.bastard.instruction.impl.PushInstruction;
 
 /**
  * Represents a basic node stack machine. This will continue to
@@ -60,8 +66,23 @@ public class Stack {
 				continue;
 			}
 
+			if (instruction instanceof FieldInstruction) {
+				push(new FieldNode(instructions.getConstantPool(), (FieldInstruction) instruction));
+				continue;
+			}
+			
+			if (instruction instanceof MethodInstruction) {
+				push(new MethodNode(instructions.getConstantPool(), (MethodInstruction) instruction));
+				continue;
+			}
+			
 			if (instruction instanceof LdcInstruction) {
 				push(new LdcNode(instructions.getConstantPool(), (LdcInstruction) instruction));
+				continue;
+			}
+			
+			if (instruction instanceof PushInstruction) {
+				push(new PushNode(instructions.getConstantPool(), (PushInstruction) instruction));
 				continue;
 			}
 			
@@ -69,7 +90,7 @@ public class Stack {
 				Instruction left = instructions.get(i - 2);
 				Instruction right = instructions.get(i - 1);
 
-				push(new ArithmeticNode(instruction, left, right));
+				push(new ArithmeticNode(instruction, left.toNode(), right.toNode()));
 				continue;
 			}
 
@@ -95,8 +116,8 @@ public class Stack {
 			return;
 		}
 
-		if (node instanceof DoubleEndedNode) {
-			DoubleEndedNode de = (DoubleEndedNode) node;
+		if (node instanceof DoublyEndedNode) {
+			DoublyEndedNode de = (DoublyEndedNode) node;
 
 			push(de.getLeft());
 			push(de.getRight());
@@ -108,7 +129,7 @@ public class Stack {
 		}
 
 		stack.push(node);
-		if (root != node && node.parent == null) {
+		if (root != node && node.getParent() == null) {
 			root.addChild(node);
 		}
 	}
@@ -120,9 +141,9 @@ public class Stack {
 		System.out.println("\t\t\t\t"+toString()+" {");
 		for (Node node : stack) {
 			if (node == root) {
-				System.out.println("\t\t\t\t\t[ROOT]"+node);
+				System.out.println("\t\t\t\t\t[ROOT]"+node.code());
 			} else {
-				System.out.println("\t\t\t\t\t      "+node);
+				System.out.println("\t\t\t\t\t\t     "+node.code());
 			}
 		}
 		System.out.println("\t\t\t\t}");
@@ -130,7 +151,7 @@ public class Stack {
 
 	@Override
 	public String toString() {
-		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", root="+root+"]";
+		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", root="+root.code()+"]";
 	}
 
 	public InstructionList getInstructions() {

@@ -3,6 +3,8 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
+import com.bastard.code.impl.FieldNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -19,8 +21,8 @@ public class FieldInstruction extends Instruction {
 	 */
 	private int fieldIndex;
 	
-	public FieldInstruction(int opcode) {
-		super(opcode);
+	public FieldInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -30,6 +32,10 @@ public class FieldInstruction extends Instruction {
 		return this;
 	}
 	
+	public int getFieldIndex() {
+		return fieldIndex;
+	}
+	 
 	@Override
 	public String toString() {
 		Opcode opcode = Opcode.valueOf(getOpcode() & 0xFF);
@@ -37,6 +43,11 @@ public class FieldInstruction extends Instruction {
 			return "FieldInstruction[op="+(getOpcode() & 0xFF)+", null]";
 		}
 		return "FieldInstruction[op=" + opcode.toString() + ", fieldIndex=" + fieldIndex + "]";
+	}
+	
+	@Override
+	public Node toNode() {
+		return new FieldNode(null, this);
 	}
 
 }

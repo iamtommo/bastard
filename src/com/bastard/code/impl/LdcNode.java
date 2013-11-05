@@ -2,6 +2,10 @@ package com.bastard.code.impl;
 
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.ConstantPoolEntry;
+import com.bastard.cls.cpool.entry.DoubleEntry;
+import com.bastard.cls.cpool.entry.FloatEntry;
+import com.bastard.cls.cpool.entry.IntegerEntry;
+import com.bastard.cls.cpool.entry.LongEntry;
 import com.bastard.cls.cpool.entry.StringRefEntry;
 import com.bastard.cls.cpool.entry.UTF8StringEntry;
 import com.bastard.code.Node;
@@ -36,6 +40,21 @@ public class LdcNode extends Node {
 			return str.getString();
 		}
 		
+		if (entry instanceof IntegerEntry) {
+			return ((IntegerEntry)entry).getValue();
+		}
+		
+		if (entry instanceof DoubleEntry) {
+			return ((DoubleEntry)entry).getValue();
+		}
+		
+		if (entry instanceof FloatEntry) {
+			return ((FloatEntry)entry).getValue();
+		}
+		
+		if (entry instanceof LongEntry) {
+			return ((LongEntry)entry).getValue();
+		}
 		return null;
 	}
 
@@ -44,7 +63,7 @@ public class LdcNode extends Node {
 	}
 
 	@Override
-	public String toString() {
-		return "LdcNode[const="+constant+", parent="+parent+", children="+children.size()+"]";
+	public String code() {
+		return "LdcNode[const="+constant+", children="+children.size()+"]";
 	}
 }

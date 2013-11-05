@@ -1,18 +1,14 @@
 package com.bastard.code.impl;
 
-import com.bastard.code.DoubleEndedNode;
+import com.bastard.code.DoublyEndedNode;
+import com.bastard.code.Node;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
-public class ArithmeticNode extends DoubleEndedNode {
+public class ArithmeticNode extends DoublyEndedNode {
 
-	public ArithmeticNode(Instruction instruction, Instruction left, Instruction right) {
+	public ArithmeticNode(Instruction instruction, Node left, Node right) {
 		super(null, instruction, left, right);
-	}
-
-	@Override
-	public String toString() {
-		return "ArithmeticNode[left="+left.getInstruction()+" "+getOperation()+" right="+right.getInstruction()+", parent="+parent+", children="+children.size()+"]";
 	}
 
 	public String getOperation() {
@@ -57,6 +53,11 @@ public class ArithmeticNode extends DoubleEndedNode {
 			return "|";
 		}
 		return "nop "+name;
+	}
+	
+	@Override
+	public String code() {
+		return "ArithmeticNode[left="+left.code()+" "+getOperation()+" right="+right.code()+", children="+children.size()+"]";
 	}
 
 }

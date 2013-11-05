@@ -1,6 +1,7 @@
 package com.bastard.code.impl;
 
 import com.bastard.code.Node;
+import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.LocalVariableInstruction;
 
 /**
@@ -24,7 +25,7 @@ public class LocalVariableNode extends Node {
 	}
 	
 	@Override
-	public String toString() {
-		return "LocalVariableNode[index="+index+", parent="+parent+", children="+children.size()+"]";
+	public String code() {
+		return "LocalVariableNode[index="+index+", type="+Opcode.valueOf(instruction.getOpcode() & 0xFF).toString()+", children="+children.size()+"]";
 	}
 }

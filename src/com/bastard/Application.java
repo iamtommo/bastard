@@ -14,6 +14,7 @@ public class Application {
 
 	public void start() {
 		try {
+			@SuppressWarnings("resource")
 			JarFile jar = new JarFile("test.jar");
 			Enumeration<JarEntry> entries = jar.entries();
 			while(entries.hasMoreElements()) {

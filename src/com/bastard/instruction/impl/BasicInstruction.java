@@ -3,6 +3,7 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -15,8 +16,8 @@ import com.bastard.instruction.Opcode;
  */
 public class BasicInstruction extends Instruction {
 
-	public BasicInstruction(int opcode) {
-		super(opcode);
+	public BasicInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -32,6 +33,11 @@ public class BasicInstruction extends Instruction {
 			return "Instruction[op="+(getOpcode() & 0xFF)+", null]";
 		}
 		return "Instruction[op=" + opcode.toString() + "]";
+	}
+	
+	@Override
+	public Node toNode() {
+		return new Node(null, this);
 	}
 
 }

@@ -6,6 +6,10 @@ import com.bastard.cls.cpool.ConstantPoolEntry;
 
 public class DoubleEntry extends ConstantPoolEntry {
 	
+	public long getValue() {
+		return value;
+	}
+
 	/**
 	 * The double value
 	 */

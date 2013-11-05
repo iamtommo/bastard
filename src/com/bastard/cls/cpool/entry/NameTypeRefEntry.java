@@ -25,4 +25,12 @@ public class NameTypeRefEntry extends ConstantPoolEntry {
 		return 1;
 	}
 
+	public int getNameIndex() {
+		return nameIndex;
+	}
+
+	public int getDescriptorIndex() {
+		return descriptorIndex;
+	}
+
 }

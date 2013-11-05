@@ -12,7 +12,7 @@ import com.bastard.instruction.impl.MethodInstruction;
 import com.bastard.instruction.impl.NewObjectInstruction;
 import com.bastard.instruction.impl.StackInstruction;
 import com.bastard.instruction.impl.ThrowInstruction;
-import com.bastard.instruction.impl.VariableInstruction;
+import com.bastard.instruction.impl.PushInstruction;
 
 
 public enum Opcode {
@@ -34,7 +34,7 @@ public enum Opcode {
 	ATHROW(0xBF, ThrowInstruction.class),
 	BALOAD(0x33, BasicInstruction.class),
 	BASTORE(0x54, BasicInstruction.class),
-	BIPUSH(0x10, VariableInstruction.class),
+	BIPUSH(0x10, PushInstruction.class),
 //	BREAKPOINT(0xCA, BasicInstruction.class),
 	CALOAD(0x34, BasicInstruction.class),
 	CASTORE(0x55, BasicInstruction.class),
@@ -216,7 +216,7 @@ public enum Opcode {
 	RETURN(0xB1, BasicInstruction.class),
 //	SALOAD(0x35, BasicInstruction.class),
 //	SASTORE(0x56, BasicInstruction.class),
-	SIPUSH(0x11, VariableInstruction.class),
+	SIPUSH(0x11, PushInstruction.class),
 	SWAP(0x5F, StackInstruction.class);
 	//TABLESWITCH(0xAA, Instruction.class),
 	//WIDE(0xC4, Instruction.class);

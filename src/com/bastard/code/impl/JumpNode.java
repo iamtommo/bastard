@@ -26,7 +26,7 @@ public class JumpNode extends Node {
 	}
 	
 	@Override
-	public String toString() {
-		return "JumpNode[dst="+dst+", parent="+parent+", children="+children.size()+"]";
+	public String code() {
+		return "JumpNode[dst="+dst+", children="+children.size()+"]";
 	}
 }

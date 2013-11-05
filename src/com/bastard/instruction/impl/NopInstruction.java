@@ -3,12 +3,13 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
 import com.bastard.instruction.Instruction;
 
 public class NopInstruction extends Instruction {
 
-	public NopInstruction(int opcode) {
-		super(opcode);
+	public NopInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -22,4 +23,8 @@ public class NopInstruction extends Instruction {
 		return "NopInstruction[]";
 	}
 
+	@Override
+	public Node toNode() {
+		return new Node(pool, this);
+	}
 }

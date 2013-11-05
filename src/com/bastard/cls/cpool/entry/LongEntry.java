@@ -26,4 +26,8 @@ public class LongEntry extends ConstantPoolEntry {
 		return 2;
 	}
 
+	public long getValue() {
+		return value;
+	}
+
 }

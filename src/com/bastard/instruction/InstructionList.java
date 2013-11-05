@@ -39,8 +39,8 @@ public class InstructionList extends LinkedList<Instruction> {
 			try {
 				Opcode op = Opcode.valueOf(opcode & 0xFF);
 				if (op != null) {
-					Constructor<? extends Instruction> c = op.getInstructionClass().getConstructor(int.class);
-					insn = c.newInstance(opcode).read(pool, code);
+					Constructor<? extends Instruction> c = op.getInstructionClass().getConstructor(ConstantPool.class, int.class);
+					insn = c.newInstance(pool, opcode).read(pool, code);
 					add(insn);
 				} else {
 					System.out.println("Unknown opcode: " + Integer.toHexString(opcode & 0xFF));

@@ -3,6 +3,7 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
 import com.bastard.instruction.Instruction;
 
 public class CheckCastInstruction extends Instruction {
@@ -12,8 +13,8 @@ public class CheckCastInstruction extends Instruction {
 	 */
 	private int classRefIndex;
 
-	public CheckCastInstruction(int opcode) {
-		super(opcode);
+	public CheckCastInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -26,6 +27,11 @@ public class CheckCastInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return "CheckCastInstruction[index=" + classRefIndex + "]";
+	}
+	
+	@Override
+	public Node toNode() {
+		return new Node(null, this);
 	}
 
 }

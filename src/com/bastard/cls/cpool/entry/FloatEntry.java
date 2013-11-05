@@ -26,4 +26,8 @@ public class FloatEntry extends ConstantPoolEntry {
 		return 1;
 	}
 
+	public float getValue() {
+		return value;
+	}
+
 }

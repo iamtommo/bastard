@@ -3,6 +3,8 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
+import com.bastard.code.impl.MethodNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -14,13 +16,17 @@ import com.bastard.instruction.Opcode;
  */
 public class MethodInstruction extends Instruction {
 
+	public int getMethodIndex() {
+		return methodIndex;
+	}
+
 	/**
 	 * The method reference index in the constant pool.
 	 */
 	private int methodIndex;
 
-	public MethodInstruction(int opcode) {
-		super(opcode);
+	public MethodInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -42,6 +48,11 @@ public class MethodInstruction extends Instruction {
 			return "MethodInstruction[op="+(getOpcode() & 0xFF)+", null]";
 		}
 		return "MethodInstruction[op=" + opcode.toString() + ", methodIndex=" + methodIndex + "]";
+	}
+	
+	@Override
+	public Node toNode() {
+		return new MethodNode(pool, this);
 	}
 
 }

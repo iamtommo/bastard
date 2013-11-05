@@ -3,6 +3,8 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
+import com.bastard.code.impl.JumpNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -13,14 +15,14 @@ import com.bastard.instruction.Opcode;
  *
  */
 public class JumpInstruction extends Instruction {
-	
+
 	/**
 	 * The location to jump to.
 	 */
 	private int jumpLocation;
-	
-	public JumpInstruction(int opcode) {
-		super(opcode);
+
+	public JumpInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class JumpInstruction extends Instruction {
 		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		Opcode opcode = Opcode.valueOf(getOpcode() & 0xFF);
@@ -46,5 +48,11 @@ public class JumpInstruction extends Instruction {
 	public int getJumpLocation() {
 		return jumpLocation;
 	}
+
+	@Override
+	public Node toNode() {
+		return new JumpNode(this);
+	}
+
 
 }

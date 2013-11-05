@@ -3,14 +3,14 @@ package com.bastard.instruction.impl;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.code.Node;
 import com.bastard.instruction.Instruction;
 
 public class IncrementInstruction extends Instruction {
 
 	private int increment;
-	public IncrementInstruction(int opcode) {
-		super(opcode);
-		// TODO Auto-generated constructor stub
+	public IncrementInstruction(ConstantPool pool, int opcode) {
+		super(pool, opcode);
 	}
 
 	@Override
@@ -22,6 +22,11 @@ public class IncrementInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return "IncrementInstruction[increment="+increment+"]";
+	}
+
+	@Override
+	public Node toNode() {
+		return new Node(pool, this);
 	}
 
 }

@@ -32,4 +32,12 @@ public class MethodRefEntry extends ConstantPoolEntry {
 		return 1;
 	}
 
+	public int getClassRefIndex() {
+		return classRefIndex;
+	}
+
+	public int getNameTypeRefIndex() {
+		return nameTypeRefIndex;
+	}
+
 }

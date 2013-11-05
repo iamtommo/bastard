@@ -22,6 +22,14 @@ public class FieldRefEntry extends ConstantPoolEntry {
 		nameTypeIndex = data.getShort();
 	}
 
+	public int getClassIndex() {
+		return classIndex;
+	}
+
+	public int getNameTypeIndex() {
+		return nameTypeIndex;
+	}
+
 	@Override
 	public String toString() {
 		return "FieldRefEntry[" + classIndex + ", " + nameTypeIndex + "]";
