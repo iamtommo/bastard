@@ -33,6 +33,7 @@ public class Stack {
 	 * The root node of the stack.
 	 */
 	private Node root;
+	
 	public Stack(InstructionList instructions) {
 		this.instructions = instructions;
 		construct();
