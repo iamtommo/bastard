@@ -42,4 +42,8 @@ public class JumpInstruction extends Instruction {
 		return "JumpInstruction[op=" + opcode.toString() + ", jumpLoc=" + jumpLocation + "]";
 	}
 
+	public int getJumpLocation() {
+		return jumpLocation;
+	}
+
 }

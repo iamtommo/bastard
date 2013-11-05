@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.AttributeInfo;
 import com.bastard.cls.info.ExceptionInfo;
+import com.bastard.code.Stack;
 import com.bastard.instruction.InstructionList;
 
 public class CodeAttribute extends AbstractAttribute {
@@ -22,6 +23,8 @@ public class CodeAttribute extends AbstractAttribute {
 	private int count;
 	private AttributeInfo[] attributes;
 	private InstructionList instructionList = new InstructionList();
+
+	private Stack stack;
 	
 	public CodeAttribute(int nameIndex, int length) {
 		this.nameIndex = nameIndex;
@@ -37,6 +40,8 @@ public class CodeAttribute extends AbstractAttribute {
 		data.get(b);
 		code = ByteBuffer.wrap(b);
 		instructionList.read(code);
+		stack = new Stack(instructionList);
+		stack.print();
 		excTableLength = data.getShort();
 		//TODO: Implement exception loading in actual ExceptionInfo file...
 		exceptionTable = new ExceptionInfo[excTableLength];
@@ -62,6 +67,10 @@ public class CodeAttribute extends AbstractAttribute {
 		return "CodeAttribute[nameIdx=" + nameIndex + ", len=" + length + ", maxStack=" + maxStack + ", maxLocals=" +
 				maxLocals + ", codeLen=" + codeLength + ", exceptionTableLen=" + excTableLength
 					+ ", attrCount=" + count + "]";
+	}
+	
+	public Stack getStack() {
+		return stack;
 	}
 
 }
