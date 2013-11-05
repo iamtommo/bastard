@@ -32,7 +32,8 @@ public class LdcNode extends Node {
 		
 		if (entry instanceof StringRefEntry) {
 			StringRefEntry ref = (StringRefEntry) entry;
-			return pool.getEntries()[ref.getStringIndex()];
+			UTF8StringEntry str = (UTF8StringEntry) pool.getEntries()[ref.getStringIndex()];
+			return str.getString();
 		}
 		
 		return null;
