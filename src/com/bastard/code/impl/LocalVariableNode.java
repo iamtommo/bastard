@@ -15,7 +15,7 @@ public class LocalVariableNode extends Node {
 	private int index;
 	
 	public LocalVariableNode(LocalVariableInstruction instruction) {
-		super(instruction);
+		super(null, instruction);
 		this.index = instruction.getIndex();
 	}
 	

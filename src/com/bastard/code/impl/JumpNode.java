@@ -17,7 +17,7 @@ public class JumpNode extends Node {
 	private int dst;
 	
 	public JumpNode(JumpInstruction instruction) {
-		super(instruction);
+		super(null, instruction);
 		this.dst = instruction.getJumpLocation();
 	}
 	

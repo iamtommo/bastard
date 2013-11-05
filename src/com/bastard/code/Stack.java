@@ -2,6 +2,7 @@ package com.bastard.code;
 
 import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.JumpNode;
+import com.bastard.code.impl.LdcNode;
 import com.bastard.code.impl.LocalVariableNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
@@ -9,6 +10,7 @@ import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
 import com.bastard.instruction.impl.JumpInstruction;
+import com.bastard.instruction.impl.LdcInstruction;
 import com.bastard.instruction.impl.LocalVariableInstruction;
 
 /**
@@ -49,7 +51,7 @@ public class Stack {
 			Instruction instruction = instructions.get(i);
 
 			if (instruction instanceof BasicInstruction) {
-				push(new Node(instruction));
+				push(new Node(instructions.getConstantPool(), instruction));
 				continue;
 			}
 			
@@ -57,8 +59,12 @@ public class Stack {
 				push(new LocalVariableNode((LocalVariableInstruction) instruction));
 				continue;
 			}
-			
 
+			if (instruction instanceof LdcInstruction) {
+				push(new LdcNode(instructions.getConstantPool(), (LdcInstruction) instruction));
+				continue;
+			}
+			
 			if (instruction instanceof ArithmeticInstruction) {
 				Instruction left = instructions.get(i - 2);
 				Instruction right = instructions.get(i - 1);

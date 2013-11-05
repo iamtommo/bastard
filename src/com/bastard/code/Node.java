@@ -3,6 +3,7 @@ package com.bastard.code;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 
 /**
@@ -24,7 +25,13 @@ public class Node {
 	 */
 	protected Instruction instruction;
 	
-	public Node(Instruction instruction) {
+	/**
+	 * A reference to the constant pool.
+	 */
+	protected ConstantPool pool;
+	
+	public Node(ConstantPool pool, Instruction instruction) {
+		this.pool = pool;
 		this.instruction = instruction;
 	}
 	

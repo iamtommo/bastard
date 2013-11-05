@@ -2,6 +2,7 @@ package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 
 public class LocalVariableInstruction extends Instruction {
@@ -16,7 +17,7 @@ public class LocalVariableInstruction extends Instruction {
 	}
 
 	@Override
-	public Instruction read(ByteBuffer code) {
+	public Instruction read(ConstantPool pool, ByteBuffer code) {
 		this.index = code.get();
 		return this;
 	}

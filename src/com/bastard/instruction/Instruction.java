@@ -2,6 +2,8 @@ package com.bastard.instruction;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
+
 /**
  * An abstract bytecode instruction.
  * @author Tommo
@@ -19,7 +21,7 @@ public abstract class Instruction {
 		return opcode;
 	}
 	
-	public abstract Instruction read(ByteBuffer code);
+	public abstract Instruction read(ConstantPool pool, ByteBuffer code);
 	
 	@Override
 	public abstract String toString();

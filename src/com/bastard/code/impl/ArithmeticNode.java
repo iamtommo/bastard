@@ -7,7 +7,7 @@ import com.bastard.instruction.Opcode;
 public class ArithmeticNode extends DoubleEndedNode {
 
 	public ArithmeticNode(Instruction instruction, Instruction left, Instruction right) {
-		super(instruction, left, right);
+		super(null, instruction, left, right);
 	}
 
 	@Override

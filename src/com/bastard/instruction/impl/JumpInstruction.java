@@ -2,6 +2,7 @@ package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
 
+import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
@@ -23,7 +24,7 @@ public class JumpInstruction extends Instruction {
 	}
 
 	@Override
-	public JumpInstruction read(ByteBuffer code) {
+	public JumpInstruction read(ConstantPool pool, ByteBuffer code) {
 		if (getOpcode() == Opcode.GOTO_W.getOpcode() || getOpcode() == Opcode.JSR_W.getOpcode()) {
 			jumpLocation = code.getInt() & 0xFFFF;
 		} else {
