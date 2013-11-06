@@ -70,7 +70,7 @@ public class CodeAttribute extends AbstractAttribute {
 			insn.print(indentations + 1);
 		}
 		
-		//stack.print(indentations + 1);
+		stack.print(indentations + 1);
 	}
 	
 	@Override

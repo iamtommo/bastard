@@ -1,6 +1,8 @@
 package com.bastard.code;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.CallMethodNode;
@@ -23,6 +25,7 @@ import com.bastard.instruction.impl.LdcInstruction;
 import com.bastard.instruction.impl.LocalVariableInstruction;
 import com.bastard.instruction.impl.MethodInstruction;
 import com.bastard.instruction.impl.PushInstruction;
+import com.bastard.util.Indent;
 
 /**
  * Represents a basic node stack machine. This will continue to
@@ -64,6 +67,7 @@ public class Stack {
 			Node n = super.push(node);
 
 			if (stack.root == null) {
+				stack.roots.put(n, n);
 				stack.root = n;
 			}
 			return n;
@@ -73,9 +77,13 @@ public class Stack {
 		public Node pop() {
 			Node node = super.pop();
 
+			if (stack.root != null) {
+				stack.root.removeChild(node);
+			}
 			if (stack.root == node) {
 				stack.root = null;
 			}
+
 			return node;
 		}
 	}
@@ -98,6 +106,8 @@ public class Stack {
 		construct();
 	}
 
+	private final Map<Node, Node> roots = new HashMap<Node, Node>();
+
 	/**
 	 * Fills the stack with the most basic form of node pairs.
 	 */
@@ -106,7 +116,17 @@ public class Stack {
 			Instruction instruction = instructions.get(i);
 
 			if (instruction instanceof BasicInstruction) {
+				boolean isReturn = instruction.toString().contains("RET");
+				
+				if (!stack.isEmpty() && stack.peek() instanceof JumpNode && isReturn) {//simplifies Jump Return to just Return
+					stack.pop();
+				}
+				
 				push(new Node(instructions.getConstantPool(), instruction));
+				
+				if (isReturn) {
+					root = null;
+				}
 				continue;
 			}
 
@@ -201,21 +221,27 @@ public class Stack {
 	/**
 	 * Print the contents of this stack.
 	 */
-	public void print() {
-		System.out.println("\t\t\t"+toString()+" {");
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + toString());
+		System.out.println(Indent.$(indentations) + "{");
 		for (Node node : stack) {
-			if (root == node) {
-				System.out.println("\t\t\t\t[ROOT]"+root.code());
-			} else {
-				System.out.println("\t\t\t\t\t     "+node.code());
+			if (roots.containsValue(node)) {
+				System.out.println(Indent.$(indentations + 1) + "[ROOT]"+roots.get(node));
+				System.out.println(Indent.$(indentations + 1) + "{");
+
+				for (Node child : roots.get(node).children) {
+					System.out.println(Indent.$(indentations + 2) + child.toString());
+				}
+				System.out.println(Indent.$(indentations + 1) + "}");
 			}
 		}
-		System.out.println("\t\t\t}");
+		System.out.println(Indent.$(indentations) + "}");
 	}
+
 
 	@Override
 	public String toString() {
-		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", root="+root+"]";
+		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", roots="+roots.size()+"]";
 	}
 
 	public InstructionList getInstructions() {

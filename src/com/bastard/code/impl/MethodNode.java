@@ -65,20 +65,6 @@ public class MethodNode extends Node {
 		this.owner = clsStrRef.getString();
 	}
 
-	public int height() {
-		String desc = signature.substring(signature.indexOf(")"));
-
-		if (desc.equals("V")) {
-			return 0;
-		}
-
-		if (desc.equals("D") || desc.equals("J")) {
-			return 2;
-		}
-
-		return 1;
-	}
-
 	/**
 	 * Gets all types related to this method.
 	 * Credits to the developers of BLOAT.
