@@ -41,7 +41,8 @@ public class CodeAttribute extends AbstractAttribute {
 		excTableLength = data.getShort();
 		exceptionTable = new ExceptionInfo[excTableLength];
 		for (int i = 0; i < exceptionTable.length; i++) {
-			exceptionTable[i].read(pool, data);
+			exceptionTable[i] = new ExceptionInfo().read(pool, data);
+			System.out.println("\t\t\t\t" + exceptionTable[i].toString());
 		}
 		
 		attrTableLength = data.getShort();

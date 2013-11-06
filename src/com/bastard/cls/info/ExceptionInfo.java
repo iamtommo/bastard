@@ -7,30 +7,40 @@ import com.bastard.cls.cpool.ConstantPool;
 public class ExceptionInfo implements Info {
 	
 	/**
-	 * Program counters
+	 * Starting program counter (inclusive)
 	 */
 	private int startPc;
+	
+	/**
+	 * End program counter (exclusive)
+	 */
 	private int endPc;
+	
+	/**
+	 * Start of the exception handler
+	 */
 	private int handlerPc;
 	
 	/**
-	 * Index in the constant pool of the exception handler.
+	 * Index in the constant pool of the exception handler (ClassRefEntry)
 	 */
-	private int catchType;
+	private int catchTypeIndex;
 	
-	public ExceptionInfo(int startPc, int endPc, int handlerPc, int catchType) {
-		this.startPc = startPc;
-		this.endPc = endPc;
-		this.handlerPc = handlerPc;
-		this.catchType = catchType;
+	public ExceptionInfo() {
 	}
 	
-	public Info read(ConstantPool pool, ByteBuffer data) {
+	@Override
+	public ExceptionInfo read(ConstantPool pool, ByteBuffer data) {
 		startPc = data.getShort();
 		endPc = data.getShort();
 		handlerPc = data.getShort();
-		catchType = data.getShort();
+		catchTypeIndex = data.getShort();
 		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExceptionInfo[startPc=" + startPc + ", endPc=" + endPc + ", handlerPc=" + handlerPc + ", catchTypeIndex=" + catchTypeIndex + "]";
 	}
 
 	public int getStartPc() {
@@ -45,8 +55,8 @@ public class ExceptionInfo implements Info {
 		return handlerPc;
 	}
 
-	public int getCatchType() {
-		return catchType;
+	public int getCatchTypeIndex() {
+		return catchTypeIndex;
 	}
 
 }

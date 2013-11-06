@@ -18,9 +18,15 @@ public class ConstantValueAttribute extends AbstractAttribute {
 	@Override
 	public AbstractAttribute read(ConstantPool pool, ByteBuffer data) {
 		this.constantValueIndex = data.getShort();
+		System.out.println("\t\t\t" + toString());
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return "ConstantValueAttribute[index=" + constantValueIndex + "]";
+	}
+	
 	public int getConstantValueIndex() {
 		return constantValueIndex;
 	}

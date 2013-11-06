@@ -1,9 +1,11 @@
 package com.bastard.cls.attribute;
 
+
 public enum Attribute {
 	NOT_IMPLEMENTED("", AbstractAttribute.class),
 	CODE("Code", CodeAttribute.class),
-	CONSTANT_VALUE("ConstantValue", ConstantValueAttribute.class);
+	CONSTANT_VALUE("ConstantValue", ConstantValueAttribute.class),
+	LINE_NUMBER_TABLE("LineNumberTable", LineNumberTableAttribute.class);
 	
 	Class<? extends AbstractAttribute> attributeClass;
 	String tag;
