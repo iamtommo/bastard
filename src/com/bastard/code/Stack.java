@@ -82,8 +82,6 @@ public class Stack {
 		}
 	}
 
-	private final Map<Node, java.util.Stack<Node>> roots = new LinkedHashMap<Node, java.util.Stack<Node>>();
-
 	/**
 	 * The java stack util.
 	 */
@@ -160,23 +158,10 @@ public class Stack {
 
 				if (name.contains("GOTO") || name.contains("JSR")) {
 					JumpNode node = new JumpNode((JumpInstruction) instruction);
-					if (root != null) {
-						NodeStack<Node> copy = new NodeStack<Node>(this);
-						copy.addAll(stack);
-						roots.put(root, copy);
-						stack.clear();
-						root = null;
-					}
 					push(node);
 					continue;
 				}
 			}
-		}
-		if (root != null) {
-			NodeStack<Node> copy = new NodeStack<Node>(this);
-			copy.addAll(stack);
-			roots.put(root, copy);
-			stack.clear();
 		}
 	}
 
@@ -219,19 +204,20 @@ public class Stack {
 	 * Print the contents of this stack.
 	 */
 	public void print() {
-		System.out.println("\t\t\t\t"+toString()+" {");
-		for (Node root : roots.keySet()) {
-			System.out.println("\t\t\t\t\t[ROOT]"+root+" {");
-			for (Node node : roots.get(root)) {
-				System.out.println("\t\t\t\t\t\t     "+node.code());
+		System.out.println("\t\t\t"+toString()+" {");
+		for (Node node : stack) {
+			if (root == node) {
+				System.out.println("\t\t\t\t[ROOT]"+root.code());
+			} else {
+				System.out.println("\t\t\t\t\t     "+node.code());
 			}
-			System.out.println("\t\t\t\t\t}");
 		}
+		System.out.println("\t\t\t}");
 	}
 
 	@Override
 	public String toString() {
-		return "Stack[roots="+roots.get(root).size()+", instructions="+instructions.size()+", root="+root+"]";
+		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", root="+root+"]";
 	}
 
 	public InstructionList getInstructions() {
