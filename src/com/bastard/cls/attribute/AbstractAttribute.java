@@ -1,4 +1,4 @@
-package com.bastard.cls.info.attribute;
+package com.bastard.cls.attribute;
 
 import java.nio.ByteBuffer;
 
