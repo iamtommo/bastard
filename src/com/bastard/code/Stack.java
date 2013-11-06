@@ -1,7 +1,8 @@
 package com.bastard.code;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.CallMethodNode;
@@ -38,13 +39,59 @@ import com.bastard.instruction.impl.PushInstruction;
 public class Stack {
 
 	/**
+	 * A small modification of java.util.Stack, which allows the dynamic updating
+	 * of root nodes.
+	 * @author Shawn Davies<sodxeh@gmail.com>
+	 *
+	 * @param <E> The node element.
+	 */
+	private static final class NodeStack<E> extends java.util.Stack<Node> {
+		/**
+		 * Default serial uid.
+		 */
+		private static final long serialVersionUID = 1L;
+		/**
+		 * The base stack.
+		 */
+		private Stack stack;
+
+		public NodeStack(Stack stack) {
+			super();
+			this.stack = stack;
+		}
+
+		@Override
+		public Node push(Node node) {
+
+			Node n = super.push(node);
+
+			if (stack.root == null) {
+				stack.root = n;
+			}
+			return n;
+		}
+
+		@Override
+		public Node pop() {
+			Node node = super.pop();
+
+			if (stack.root == node) {
+				stack.root = null;
+			}
+			return node;
+		}
+	}
+
+	private final Map<Node, java.util.Stack<Node>> roots = new LinkedHashMap<Node, java.util.Stack<Node>>();
+
+	/**
 	 * The java stack util.
 	 */
-	private java.util.Stack<Node> stack = new java.util.Stack<>();
+	private final java.util.Stack<Node> stack = new NodeStack<>(this);
 	/**
 	 * The list of raw instructions.
 	 */
-	private InstructionList instructions;
+	private final InstructionList instructions;
 	/**
 	 * The root node of the stack.
 	 */
@@ -58,7 +105,7 @@ public class Stack {
 	/**
 	 * Fills the stack with the most basic form of node pairs.
 	 */
-	public void construct() {
+	private void construct() {
 		for (int i = 0; i < instructions.size(); i++) {
 			Instruction instruction = instructions.get(i);
 
@@ -78,7 +125,7 @@ public class Stack {
 			}
 
 			if (instruction instanceof MethodInstruction) {
-				push(new MethodNode(instructions.getConstantPool(), (MethodInstruction) instruction));
+				push(collapseMethod(new MethodNode(instructions.getConstantPool(), (MethodInstruction) instruction)));
 				continue;
 			}
 
@@ -93,9 +140,10 @@ public class Stack {
 			}
 
 			if (instruction instanceof CastInstruction) {
-				Instruction operand = instructions.get(i - 1);
+				Instruction left = instructions.get(i - 2);
+				Instruction right = instructions.get(i - 1);
 
-				push(new CastNode(instructions.getConstantPool(), instruction.toNode(), operand.toNode()));
+				push(new CastNode(instructions.getConstantPool(), instruction.toNode(), left.toNode(), right.toNode()));
 				continue;
 			}
 
@@ -111,52 +159,41 @@ public class Stack {
 				String name = Opcode.valueOf(instruction.getOpcode() & 0xFF).toString();
 
 				if (name.contains("GOTO") || name.contains("JSR")) {
-					push(new JumpNode((JumpInstruction) instruction));
+					JumpNode node = new JumpNode((JumpInstruction) instruction);
+					if (root != null) {
+						NodeStack<Node> copy = new NodeStack<Node>(this);
+						copy.addAll(stack);
+						roots.put(root, copy);
+						stack.clear();
+						root = null;
+					}
+					push(node);
 					continue;
 				}
 			}
 		}
+		if (root != null) {
+			NodeStack<Node> copy = new NodeStack<Node>(this);
+			copy.addAll(stack);
+			roots.put(root, copy);
+			stack.clear();
+		}
 	}
 
 	/**
-	 * Builds a list of entry points, which represent method invocations.
+	 * Collapses MethodNodes and their parameters into a single node,
+	 * which represents a method invocation.
 	 */
-	public void buildEntryPoints(MethodNode mn) {
-		int amount = 0;
+	private CallMethodNode collapseMethod(MethodNode mn) {
+		List<String> types = mn.getTypes();
 
-		for (char c : mn.getSignature().toCharArray()) {
-			if (c == '(') {
-				continue;
-			}
-			if (c == ')') {
-				break;
-			}
-			switch(c) {
-			case 'I':
-			case 'C':
-			case 'J':
-			case 'D':
-			case 'B':
-			case 'F':
-			case ';':
-				amount++;
-			break;
-			}
+		int last = types.size() - 1;
+
+		for (int i = 0; i < last; i++) {
+			mn.addChild(stack.pop());
 		}
 
-		for (int j = 0; j < amount; j++) {
-			Node parameter = stack.pop();
-			mn.addChild(parameter);
-		}
-		push(new CallMethodNode(mn));
-		//				stack.set(i, new CallMethodNode(mn, parameters.toArray(new Node[0])));
-	}
-
-	public void delete(Node node) {
-		for (Node child : node.children) {
-			delete(child);
-		}
-		stack.remove(node);
+		return new CallMethodNode(mn, types.get(last));
 	}
 
 	/**
@@ -164,23 +201,15 @@ public class Stack {
 	 * @param node The node to push.
 	 */
 	public void push(Node node) {
-		if (root == null) {
-			root = node;
-			push(root);
-			return;
-		}
-
 		if (node instanceof SinglyEndedNode) {// pop off the original nodes.
 			stack.pop();
 		} else if (node instanceof DoublyEndedNode) {
 			stack.pop();
 			stack.pop();
-		} else if (node instanceof MethodNode) {
-			buildEntryPoints((MethodNode) node);
-			return;
 		}
 
 		stack.push(node);
+
 		if (root != node && node.getParent() == null) {
 			root.addChild(node);
 		}
@@ -191,19 +220,18 @@ public class Stack {
 	 */
 	public void print() {
 		System.out.println("\t\t\t\t"+toString()+" {");
-		for (Node node : stack) {
-			if (node == root) {
-				System.out.println("\t\t\t\t\t[ROOT]"+node.code());
-			} else {
+		for (Node root : roots.keySet()) {
+			System.out.println("\t\t\t\t\t[ROOT]"+root+" {");
+			for (Node node : roots.get(root)) {
 				System.out.println("\t\t\t\t\t\t     "+node.code());
 			}
+			System.out.println("\t\t\t\t\t}");
 		}
-		System.out.println("\t\t\t\t}");
 	}
 
 	@Override
 	public String toString() {
-		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", root="+root.code()+"]";
+		return "Stack[roots="+roots.get(root).size()+", instructions="+instructions.size()+", root="+root+"]";
 	}
 
 	public InstructionList getInstructions() {

@@ -12,11 +12,13 @@ public class CallMethodNode extends Node {
 
 	private MethodNode node;
 	private Node[] parameters;
+	private String returnType;
 	
-	public CallMethodNode(MethodNode node) {
+	public CallMethodNode(MethodNode node, String returnType) {
 		super(node.getPool(), node.getInstruction());
 		this.node = node;
 		this.parameters = node.getChildren().toArray(new Node[0]);
+		this.returnType = returnType;
 		
 		for (Node parameter : parameters) {
 			parameter.setParent(this);
@@ -32,6 +34,10 @@ public class CallMethodNode extends Node {
 
 	public Node[] getParameters() {
 		return parameters;
+	}
+	
+	public String getReturnType() {
+		return returnType;
 	}
 	
 	@Override

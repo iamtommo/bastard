@@ -1,5 +1,8 @@
 package com.bastard.code.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.ConstantPoolEntry;
 import com.bastard.cls.cpool.entry.ClassRefEntry;
@@ -49,7 +52,7 @@ public class MethodNode extends Node {
 			clsStrRef = (UTF8StringEntry) pool.getEntries()[cls.getStringIndex()];
 		} else {
 			InterfaceMethodRefEntry ref = (InterfaceMethodRefEntry) entry;
-			
+
 			ClassRefEntry cls = (ClassRefEntry) pool.getEntries()[ref.getClassRefIndex()];
 			nameType = (NameTypeRefEntry) pool.getEntries()[ref.getNameTypeRefIndex()];
 			nameStrRef = (UTF8StringEntry) pool.getEntries()[nameType.getNameIndex()];
@@ -60,6 +63,69 @@ public class MethodNode extends Node {
 		this.name = nameStrRef.getString();
 		this.signature = typeStrRef.getString();
 		this.owner = clsStrRef.getString();
+	}
+
+	public int height() {
+		String desc = signature.substring(signature.indexOf(")"));
+
+		if (desc.equals("V")) {
+			return 0;
+		}
+
+		if (desc.equals("D") || desc.equals("J")) {
+			return 2;
+		}
+
+		return 1;
+	}
+
+	/**
+	 * Gets all types related to this method.
+	 * Credits to the developers of BLOAT.
+	 * @return The types of this method.
+	 */
+	public List<String> getTypes() {
+		List<String> types = new ArrayList<>();
+		String t = "";
+		int state = 0;
+		for (int i = 0; i < signature.length(); i++) {
+			switch(state) {
+			case 0:
+				switch(signature.charAt(i)) {
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'F':
+				case 'I':
+				case 'J':
+				case 'S':
+				case 'V':
+				case 'Z':
+					types.add(t + signature.charAt(i));
+					t = "";
+					break;
+				case 'L':
+					t += 'L';
+					state = 1;
+					break;
+				case '[':
+					t += '[';
+					break;
+				}
+				break;
+			case 1:
+				t += signature.charAt(i);
+				if (signature.charAt(i) == ';') {
+					types.add(t);
+					t = "";
+					state = 0;
+				}
+				break;
+				default:
+					throw new IllegalStateException("Invalid character in method: "+signature);
+			}
+		}
+		return types;
 	}
 
 	@Override

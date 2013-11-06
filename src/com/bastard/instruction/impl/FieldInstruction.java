@@ -47,7 +47,7 @@ public class FieldInstruction extends Instruction {
 	
 	@Override
 	public Node toNode() {
-		return new FieldNode(null, this);
+		return new FieldNode(pool, this);
 	}
 
 }
