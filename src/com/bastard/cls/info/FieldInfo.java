@@ -3,6 +3,7 @@ package com.bastard.cls.info;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.util.Indent;
 
 public class FieldInfo implements Info {
 	
@@ -29,7 +30,6 @@ public class FieldInfo implements Info {
 		descriptorIndex = data.getShort();
 		attributesCount = data.getShort();
 		attributes = new AttributeInfo[attributesCount];
-		System.out.println("\t\t" + toString());
 		for (int i = 0; i < attributesCount; i++) {
 			AttributeInfo ai = new AttributeInfo().read(pool, data);
 			attributes[i] = ai;
@@ -38,8 +38,16 @@ public class FieldInfo implements Info {
 	}
 	
 	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
+		for (int i = 0; i < attributesCount; i++) {
+			attributes[i].print(indentations + 1);
+		}
+	}
+	
+	@Override
 	public String toString() {
-		return "Field[accessFlags=" + accessFlags + ", nameIdx=" + nameIndex + ", descIndex=" + descriptorIndex
+		return "FieldInfo[accessFlags=" + accessFlags + ", nameIdx=" + nameIndex + ", descIndex=" + descriptorIndex
 				+ ", attribCount=" + attributesCount + "]";
 	}
 

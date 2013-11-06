@@ -26,7 +26,6 @@ public class LdcInstruction extends Instruction {
 		} else if (getOpcode() == Opcode.LDC_W.getOpcode() || getOpcode() == Opcode.LDC2_W.getOpcode()) {
 			constantIndex = code.getShort();
 		}
-		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 

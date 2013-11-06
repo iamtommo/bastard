@@ -3,6 +3,7 @@ package com.bastard.cls.info;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.util.Indent;
 
 public class LineNumberInfo implements Info {
 	
@@ -21,6 +22,11 @@ public class LineNumberInfo implements Info {
 		this.startPc = data.getShort();
 		this.lineNumber = data.getShort();
 		return this;
+	}
+	
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
 	}
 	
 	@Override

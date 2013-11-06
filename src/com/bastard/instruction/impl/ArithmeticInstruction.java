@@ -20,7 +20,6 @@ public class ArithmeticInstruction extends Instruction {
 
 	@Override
 	public Instruction read(ConstantPool pool, ByteBuffer code) {
-		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 

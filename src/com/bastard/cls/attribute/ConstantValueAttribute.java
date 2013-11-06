@@ -3,6 +3,7 @@ package com.bastard.cls.attribute;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.util.Indent;
 
 public class ConstantValueAttribute extends AbstractAttribute {
 	
@@ -18,8 +19,12 @@ public class ConstantValueAttribute extends AbstractAttribute {
 	@Override
 	public AbstractAttribute read(ConstantPool pool, ByteBuffer data) {
 		this.constantValueIndex = data.getShort();
-		System.out.println("\t\t\t" + toString());
 		return this;
+	}
+	
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
 	}
 
 	@Override

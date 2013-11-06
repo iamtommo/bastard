@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.LineNumberInfo;
+import com.bastard.util.Indent;
 
 public class LineNumberTableAttribute extends AbstractAttribute {
 	
@@ -21,8 +22,15 @@ public class LineNumberTableAttribute extends AbstractAttribute {
 		for (int i = 0; i < lineNumberTableLen; i++) {
 			lineNumberTable[i] = new LineNumberInfo().read(pool, data);
 		}
-		System.out.println("\t\t\t\t" + toString());
 		return this;
+	}
+	
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + toString());
+		for (int i = 0; i < lineNumberTableLen; i++) {
+			lineNumberTable[i].print(indentations + 1);
+		}
 	}
 	
 	@Override

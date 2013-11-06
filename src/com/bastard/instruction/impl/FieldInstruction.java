@@ -28,7 +28,6 @@ public class FieldInstruction extends Instruction {
 	@Override
 	public FieldInstruction read(ConstantPool pool, ByteBuffer code) {
 		fieldIndex = code.getShort();
-		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 	

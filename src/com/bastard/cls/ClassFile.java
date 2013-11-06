@@ -85,14 +85,11 @@ public class ClassFile {
 		Application.log("\tConstant pool size: " + cSize);
 		
 		for (int ind = 0; ind < constantPool.getSize() - 1;) {
-			byte tag = data.get();
-//			System.out.print("\t(" + ind + ") Entry tag: " + tag);
-			
+			byte tag = data.get();	
 			EntryType type = EntryType.valueOf(tag);
 			ConstantPoolEntry entry = type.getEntryClass().newInstance();
 			entry.read(data);
 			constantPool.addEntry(entry);
-//			System.out.println(", Resolved: " + entry.toString());
 			ind += entry.getIndexIncrement();
 		}
 		
@@ -102,13 +99,13 @@ public class ClassFile {
 		isSuper = (accessFlags & 0x0020) > 0;
 		isInterface = (accessFlags & 0x0200) > 0;
 		isAbstract = (accessFlags & 0x0400) > 0;
-		System.out.print("Access flags: " + Integer.toHexString(accessFlags) + " - ");
-		System.out.println("\tpublic=" + isPublic + ", final=" + isFinal + ", super=" + isSuper +
+		System.out.print("\tAccess flags: " + Integer.toHexString(accessFlags) + " - ");
+		System.out.println("public=" + isPublic + ", final=" + isFinal + ", super=" + isSuper +
 				", interface=" + isInterface + ", abstract=" + isAbstract);
 		
 		thisClassIndex = data.getShort();
 		superClassIndex = data.getShort();
-		System.out.println("Class pool indexes: this=" + thisClassIndex + " super=" + superClassIndex);
+		System.out.println("\tClass pool indexes: this=" + thisClassIndex + " super=" + superClassIndex);
 		
 		int iTableSize = data.getShort();
 		interfaceTable = new int[iTableSize];
@@ -124,6 +121,7 @@ public class ClassFile {
 		System.out.println("\tField table size: " + fieldTableSize);
 		for (int i = 0; i < fieldTable.length; i++) {
 			FieldInfo fi = new FieldInfo().read(constantPool, data);
+			fi.print(2);
 			fieldTable[i] = fi;
 		}
 		
@@ -132,6 +130,7 @@ public class ClassFile {
 		System.out.println("\tMethod table size: " + methodTableSize);
 		for (int i = 0; i < methodTable.length; i++) {
 			MethodInfo mi = new MethodInfo().read(constantPool, data);
+			mi.print(2);
 			methodTable[i] = mi;
 		}
 		
@@ -140,8 +139,8 @@ public class ClassFile {
 		System.out.println("\tClass attributes count: " + attributesCount);
 		for (int i = 0; i < attributes.length; i++) {
 			AttributeInfo ai = new AttributeInfo().read(constantPool, data);
+			ai.print(2);
 			attributes[i] = ai;
-			System.out.println("\t\t" + ai.toString());
 		}
 		System.out.println("}\n");
 	}

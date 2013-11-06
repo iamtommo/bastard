@@ -3,6 +3,7 @@ package com.bastard.cls.info;
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.util.Indent;
 
 public class ExceptionInfo implements Info {
 	
@@ -36,6 +37,11 @@ public class ExceptionInfo implements Info {
 		handlerPc = data.getShort();
 		catchTypeIndex = data.getShort();
 		return this;
+	}
+	
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
 	}
 	
 	@Override

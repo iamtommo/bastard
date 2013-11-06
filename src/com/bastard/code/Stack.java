@@ -1,8 +1,6 @@
 package com.bastard.code;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.CallMethodNode;

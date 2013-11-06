@@ -6,7 +6,9 @@ import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.AttributeInfo;
 import com.bastard.cls.info.ExceptionInfo;
 import com.bastard.code.Stack;
+import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
+import com.bastard.util.Indent;
 
 public class CodeAttribute extends AbstractAttribute {
 
@@ -36,13 +38,11 @@ public class CodeAttribute extends AbstractAttribute {
 		code = ByteBuffer.wrap(b);
 		instructionList.read(pool, code);
 		stack = new Stack(instructionList);
-		stack.print();
 		
 		excTableLength = data.getShort();
 		exceptionTable = new ExceptionInfo[excTableLength];
 		for (int i = 0; i < exceptionTable.length; i++) {
 			exceptionTable[i] = new ExceptionInfo().read(pool, data);
-			System.out.println("\t\t\t\t" + exceptionTable[i].toString());
 		}
 		
 		attrTableLength = data.getShort();
@@ -51,8 +51,26 @@ public class CodeAttribute extends AbstractAttribute {
 			AttributeInfo ai = new AttributeInfo().read(pool, data);
 			attributes[i] = ai;
 		}
-		System.out.println("\t\t\t" + toString());
 		return this;
+	}
+	
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
+		
+		for (int i = 0; i < exceptionTable.length; i++) {
+			exceptionTable[i].print(indentations + 1);
+		}
+		
+		for (int i = 0; i < attributes.length; i++) {
+			attributes[i].print(indentations + 1);
+		}
+		
+		for (Instruction insn : instructionList) {
+			insn.print(indentations + 1);
+		}
+		
+		//stack.print(indentations + 1);
 	}
 	
 	@Override

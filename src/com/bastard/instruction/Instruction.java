@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.code.Node;
+import com.bastard.util.Indent;
 
 /**
  * An abstract bytecode instruction.
@@ -34,5 +35,9 @@ public abstract class Instruction {
 	
 	@Override
 	public abstract String toString();
+	
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
+	}
 
 }

@@ -8,6 +8,8 @@ public interface Info {
 	
 	public Info read(ConstantPool pool, ByteBuffer data);
 	
+	public void print(int indentations);
+	
 	public String toString();
 	
 }

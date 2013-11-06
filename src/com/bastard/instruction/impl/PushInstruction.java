@@ -36,7 +36,6 @@ public class PushInstruction extends Instruction {
 		} else {
 			this.value = code.get();
 		}
-		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 	

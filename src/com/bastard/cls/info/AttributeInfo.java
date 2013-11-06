@@ -7,6 +7,7 @@ import com.bastard.cls.attribute.Attribute;
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.ConstantPoolEntry;
 import com.bastard.cls.cpool.entry.UTF8StringEntry;
+import com.bastard.util.Indent;
 
 /**
  * Field or method attribute info.
@@ -51,13 +52,23 @@ public class AttributeInfo implements Info {
 		return this;
 	}
 	
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + "" + toString());
+		if (attribute != null) {
+			attribute.print(indentations + 1);
+		} else {
+			System.out.println(Indent.$(indentations) + "UnknownAttribute[null]");
+		}
+	}
+	
 	public AbstractAttribute getAttribute() {
 		return attribute;
 	}
 	
 	@Override
 	public String toString() {
-		return "Attribute[nameIdx=" + nameIndex + ", length=" + length + "]";
+		return "AttributeInfo[nameIdx=" + nameIndex + ", length=" + length + "]";
 	}
 
 }

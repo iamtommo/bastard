@@ -15,6 +15,10 @@ public abstract class AbstractAttribute {
 	}
 	
 	public abstract AbstractAttribute read(ConstantPool pool, ByteBuffer data);
+	
+	public abstract void print(int indentations);
+	
+	public abstract String toString();
 
 	public int getNameIndex() {
 		return nameIndex;

@@ -20,7 +20,6 @@ public class CheckCastInstruction extends Instruction {
 	@Override
 	public Instruction read(ConstantPool pool, ByteBuffer code) {
 		classRefIndex = code.getShort();
-		System.out.println("\t\t\t\t" + toString());
 		return this;
 	}
 
