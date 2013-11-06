@@ -20,7 +20,7 @@ public class CodeAttribute extends AbstractAttribute {
 	private ByteBuffer code;
 	private int excTableLength;
 	private ExceptionInfo[] exceptionTable;
-	private int count;
+	private int attrTableLength;
 	private AttributeInfo[] attributes;
 	private InstructionList instructionList = new InstructionList();
 
@@ -42,18 +42,15 @@ public class CodeAttribute extends AbstractAttribute {
 		instructionList.read(pool, code);
 		stack = new Stack(instructionList);
 		stack.print();
+		
 		excTableLength = data.getShort();
-		//TODO: Implement exception loading in actual ExceptionInfo file...
 		exceptionTable = new ExceptionInfo[excTableLength];
 		for (int i = 0; i < exceptionTable.length; i++) {
-			int startPc = data.getShort();
-			int endPc = data.getShort();
-			int handlerPc = data.getShort();
-			int catchType = data.getShort();
-			exceptionTable[i] = new ExceptionInfo(startPc, endPc, handlerPc, catchType);
+			exceptionTable[i].read(pool, data);
 		}
-		count = data.getShort();
-		attributes = new AttributeInfo[count];
+		
+		attrTableLength = data.getShort();
+		attributes = new AttributeInfo[attrTableLength];
 		for (int i = 0; i < attributes.length; i++) {
 			AttributeInfo ai = new AttributeInfo().read(pool, data);
 			attributes[i] = ai;
@@ -66,7 +63,7 @@ public class CodeAttribute extends AbstractAttribute {
 	public String toString() {
 		return "CodeAttribute[nameIdx=" + nameIndex + ", len=" + length + ", maxStack=" + maxStack + ", maxLocals=" +
 				maxLocals + ", codeLen=" + codeLength + ", exceptionTableLen=" + excTableLength
-					+ ", attrCount=" + count + "]";
+					+ ", attributeTableLen=" + attrTableLength + "]";
 	}
 	
 	public Stack getStack() {

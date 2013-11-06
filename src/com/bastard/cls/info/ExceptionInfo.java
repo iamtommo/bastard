@@ -1,6 +1,10 @@
 package com.bastard.cls.info;
 
-public class ExceptionInfo {
+import java.nio.ByteBuffer;
+
+import com.bastard.cls.cpool.ConstantPool;
+
+public class ExceptionInfo implements Info {
 	
 	/**
 	 * Program counters
@@ -19,6 +23,30 @@ public class ExceptionInfo {
 		this.endPc = endPc;
 		this.handlerPc = handlerPc;
 		this.catchType = catchType;
+	}
+	
+	public Info read(ConstantPool pool, ByteBuffer data) {
+		startPc = data.getShort();
+		endPc = data.getShort();
+		handlerPc = data.getShort();
+		catchType = data.getShort();
+		return this;
+	}
+
+	public int getStartPc() {
+		return startPc;
+	}
+
+	public int getEndPc() {
+		return endPc;
+	}
+
+	public int getHandlerPc() {
+		return handlerPc;
+	}
+
+	public int getCatchType() {
+		return catchType;
 	}
 
 }
