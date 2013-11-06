@@ -2,6 +2,7 @@ package com.bastard.instruction;
 
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
+import com.bastard.instruction.impl.CastInstruction;
 import com.bastard.instruction.impl.CheckCastInstruction;
 import com.bastard.instruction.impl.FieldInstruction;
 import com.bastard.instruction.impl.IncrementInstruction;
@@ -10,9 +11,9 @@ import com.bastard.instruction.impl.LdcInstruction;
 import com.bastard.instruction.impl.LocalVariableInstruction;
 import com.bastard.instruction.impl.MethodInstruction;
 import com.bastard.instruction.impl.NewObjectInstruction;
+import com.bastard.instruction.impl.PushInstruction;
 import com.bastard.instruction.impl.StackInstruction;
 import com.bastard.instruction.impl.ThrowInstruction;
-import com.bastard.instruction.impl.PushInstruction;
 
 
 public enum Opcode {
@@ -103,12 +104,12 @@ public enum Opcode {
 	GETSTATIC(0xB2, FieldInstruction.class),
 	GOTO(0xA7, JumpInstruction.class),
 	GOTO_W(0xC8, JumpInstruction.class),
-	I2B(0x91, BasicInstruction.class),
-	I2C(0x92, BasicInstruction.class),
-	I2D(0x87, BasicInstruction.class),
-	I2F(0x86, BasicInstruction.class),
-	I2L(0x85, BasicInstruction.class),
-	I2S(0x93, BasicInstruction.class),
+	I2B(0x91, CastInstruction.class),
+	I2C(0x92, CastInstruction.class),
+	I2D(0x87, CastInstruction.class),
+	I2F(0x86, CastInstruction.class),
+	I2L(0x85, CastInstruction.class),
+	I2S(0x93, CastInstruction.class),
 	IADD(0x60, ArithmeticInstruction.class),
 	IALOAD(0x2E, BasicInstruction.class),
 	IAND(0x7E, ArithmeticInstruction.class),
@@ -169,7 +170,7 @@ public enum Opcode {
 	JSR_W(0xC9, JumpInstruction.class),
 //	L2D(0x8A, BasicInstruction.class),
 //	L2F(0x89, BasicInstruction.class),
-	L2I(0x88, BasicInstruction.class),
+	L2I(0x88, CastInstruction.class),
 	LADD(0x61, ArithmeticInstruction.class),
 //	LALOAD(0x2F, BasicInstruction.class),
 	LAND(0x7F, ArithmeticInstruction.class),

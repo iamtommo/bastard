@@ -71,4 +71,16 @@ public class Node {
 		return "Node[instruction="+instruction+", children="+children.size()+"]";
 	}
 	
+	public ConstantPool getPool() {
+		return pool;
+	}
+	
+	public List<Node> getChildren() {
+		return children;
+	}
+	
+	@Override
+	public String toString() {
+		return code();
+	}
 }

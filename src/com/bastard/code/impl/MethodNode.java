@@ -64,6 +64,31 @@ public class MethodNode extends Node {
 
 	@Override
 	public String code() {
-		return "MethodNode[owner="+owner+", name="+name+", signature="+signature+", children="+children.size()+"]";
+		return "MethodNode[owner="+owner+", name="+name+", signature="+signature+"]";
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
 }

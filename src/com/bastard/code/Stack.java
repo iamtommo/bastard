@@ -1,6 +1,11 @@
 package com.bastard.code;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bastard.code.impl.ArithmeticNode;
+import com.bastard.code.impl.CallMethodNode;
+import com.bastard.code.impl.CastNode;
 import com.bastard.code.impl.FieldNode;
 import com.bastard.code.impl.JumpNode;
 import com.bastard.code.impl.LdcNode;
@@ -12,6 +17,7 @@ import com.bastard.instruction.InstructionList;
 import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
+import com.bastard.instruction.impl.CastInstruction;
 import com.bastard.instruction.impl.FieldInstruction;
 import com.bastard.instruction.impl.JumpInstruction;
 import com.bastard.instruction.impl.LdcInstruction;
@@ -43,7 +49,7 @@ public class Stack {
 	 * The root node of the stack.
 	 */
 	private Node root;
-	
+
 	public Stack(InstructionList instructions) {
 		this.instructions = instructions;
 		construct();
@@ -60,7 +66,7 @@ public class Stack {
 				push(new Node(instructions.getConstantPool(), instruction));
 				continue;
 			}
-			
+
 			if (instruction instanceof LocalVariableInstruction) {
 				push(new LocalVariableNode((LocalVariableInstruction) instruction));
 				continue;
@@ -70,22 +76,29 @@ public class Stack {
 				push(new FieldNode(instructions.getConstantPool(), (FieldInstruction) instruction));
 				continue;
 			}
-			
+
 			if (instruction instanceof MethodInstruction) {
 				push(new MethodNode(instructions.getConstantPool(), (MethodInstruction) instruction));
 				continue;
 			}
-			
+
 			if (instruction instanceof LdcInstruction) {
 				push(new LdcNode(instructions.getConstantPool(), (LdcInstruction) instruction));
 				continue;
 			}
-			
+
 			if (instruction instanceof PushInstruction) {
 				push(new PushNode(instructions.getConstantPool(), (PushInstruction) instruction));
 				continue;
 			}
-			
+
+			if (instruction instanceof CastInstruction) {
+				Instruction operand = instructions.get(i - 1);
+
+				push(new CastNode(instructions.getConstantPool(), instruction.toNode(), operand.toNode()));
+				continue;
+			}
+
 			if (instruction instanceof ArithmeticInstruction) {
 				Instruction left = instructions.get(i - 2);
 				Instruction right = instructions.get(i - 1);
@@ -106,6 +119,47 @@ public class Stack {
 	}
 
 	/**
+	 * Builds a list of entry points, which represent method invocations.
+	 */
+	public void buildEntryPoints(MethodNode mn) {
+		int amount = 0;
+
+		for (char c : mn.getSignature().toCharArray()) {
+			if (c == '(') {
+				continue;
+			}
+			if (c == ')') {
+				break;
+			}
+			switch(c) {
+			case 'I':
+			case 'C':
+			case 'J':
+			case 'D':
+			case 'B':
+			case 'F':
+			case ';':
+				amount++;
+			break;
+			}
+		}
+
+		for (int j = 0; j < amount; j++) {
+			Node parameter = stack.pop();
+			mn.addChild(parameter);
+		}
+		push(new CallMethodNode(mn));
+		//				stack.set(i, new CallMethodNode(mn, parameters.toArray(new Node[0])));
+	}
+
+	public void delete(Node node) {
+		for (Node child : node.children) {
+			delete(child);
+		}
+		stack.remove(node);
+	}
+
+	/**
 	 * Pushes nodes fully onto the stack.
 	 * @param node The node to push.
 	 */
@@ -115,10 +169,15 @@ public class Stack {
 			push(root);
 			return;
 		}
-		
-		if (node instanceof ArithmeticNode) {// pop off the original left/right nodes
+
+		if (node instanceof SinglyEndedNode) {// pop off the original nodes.
+			stack.pop();
+		} else if (node instanceof DoublyEndedNode) {
 			stack.pop();
 			stack.pop();
+		} else if (node instanceof MethodNode) {
+			buildEntryPoints((MethodNode) node);
+			return;
 		}
 
 		stack.push(node);
