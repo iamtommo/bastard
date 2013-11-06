@@ -175,6 +175,11 @@ public class Stack {
 				String name = Opcode.valueOf(instruction.getOpcode() & 0xFF).toString();
 
 				if (name.contains("GOTO") || name.contains("JSR")) {
+					
+					if (!stack.isEmpty() && stack.peek() instanceof JumpNode) {// simplifies redundant jump nodes (jumping to another jump node). 
+						stack.pop();
+					}
+					
 					JumpNode node = new JumpNode((JumpInstruction) instruction);
 					push(node);
 					continue;
