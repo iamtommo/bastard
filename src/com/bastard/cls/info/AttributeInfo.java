@@ -6,7 +6,7 @@ import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.ConstantPoolEntry;
 import com.bastard.cls.cpool.entry.UTF8StringEntry;
 import com.bastard.cls.info.attribute.AbstractAttribute;
-import com.bastard.cls.info.attribute.CodeAttribute;
+import com.bastard.cls.info.attribute.Attribute;
 
 /**
  * Field or method attribute info.
@@ -33,11 +33,16 @@ public class AttributeInfo implements Info {
 		ConstantPoolEntry cpe = pool.getEntries()[nameIndex];
 		if (cpe instanceof UTF8StringEntry) {
 			UTF8StringEntry entry = (UTF8StringEntry) cpe;
-			if (entry.getString().equals(CodeAttribute.ENTRY_STRING)) {
-				attribute = new CodeAttribute(nameIndex, length).read(pool, data);
-			} else {
+			Attribute attr = Attribute.getAttribute(entry.getString());
+			if (attr == Attribute.NOT_IMPLEMENTED) {
 				byte[] tmp = new byte[length];
 				data.get(tmp);
+			} else {
+				try {
+					this.attribute = attr.getAttributeClass().getConstructor(int.class, int.class).newInstance(nameIndex, length).read(pool, data);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} else {
 			byte[] tmp = new byte[length];

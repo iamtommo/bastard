@@ -9,11 +9,7 @@ import com.bastard.code.Stack;
 import com.bastard.instruction.InstructionList;
 
 public class CodeAttribute extends AbstractAttribute {
-	
-	public static final String ENTRY_STRING = "Code";
-	
-	private int nameIndex;
-	private int length;
+
 	private int maxStack;
 	private int maxLocals;
 	private int codeLength;
@@ -27,8 +23,7 @@ public class CodeAttribute extends AbstractAttribute {
 	private Stack stack;
 	
 	public CodeAttribute(int nameIndex, int length) {
-		this.nameIndex = nameIndex;
-		this.length = length;
+		super(nameIndex, length);
 	}
 
 	@Override
@@ -61,7 +56,7 @@ public class CodeAttribute extends AbstractAttribute {
 	
 	@Override
 	public String toString() {
-		return "CodeAttribute[nameIdx=" + nameIndex + ", len=" + length + ", maxStack=" + maxStack + ", maxLocals=" +
+		return "CodeAttribute[nameIdx=" + getNameIndex() + ", len=" + getLength() + ", maxStack=" + maxStack + ", maxLocals=" +
 				maxLocals + ", codeLen=" + codeLength + ", exceptionTableLen=" + excTableLength
 					+ ", attributeTableLen=" + attrTableLength + "]";
 	}

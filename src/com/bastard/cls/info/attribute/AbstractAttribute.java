@@ -6,9 +6,22 @@ import com.bastard.cls.cpool.ConstantPool;
 
 public abstract class AbstractAttribute {
 	
-	public AbstractAttribute() {
+	private int nameIndex;
+	private int length;
+	
+	public AbstractAttribute(int nameIndex, int length) {
+		this.nameIndex = nameIndex;
+		this.length = length;
 	}
 	
 	public abstract AbstractAttribute read(ConstantPool pool, ByteBuffer data);
+
+	public int getNameIndex() {
+		return nameIndex;
+	}
+
+	public int getLength() {
+		return length;
+	}
 
 }
