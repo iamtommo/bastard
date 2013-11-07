@@ -243,7 +243,6 @@ public class Stack {
 		System.out.println(Indent.$(indentations) + "}");
 	}
 
-
 	@Override
 	public String toString() {
 		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", roots="+roots.size()+"]";
