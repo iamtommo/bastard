@@ -136,7 +136,11 @@ public class Stack {
 			}
 
 			if (instruction instanceof FieldInstruction) {
-				push(new FieldNode(instructions.getConstantPool(), (FieldInstruction) instruction));
+				FieldNode node = new FieldNode(instructions.getConstantPool(), (FieldInstruction) instruction);
+				if (node.instruction.toString().contains("PUT")) {
+					node.addChild(stack.pop());
+				}
+				push(node);
 				continue;
 			}
 
@@ -156,18 +160,12 @@ public class Stack {
 			}
 
 			if (instruction instanceof CastInstruction) {
-				Instruction left = instructions.get(i - 2);
-				Instruction right = instructions.get(i - 1);
-
-				push(new CastNode(instructions.getConstantPool(), instruction.toNode(), left.toNode(), right.toNode()));
+				push(new CastNode(instructions.getConstantPool(), instruction.toNode(), stack.pop(), stack.pop()));
 				continue;
 			}
-
+			
 			if (instruction instanceof ArithmeticInstruction) {
-				Instruction left = instructions.get(i - 2);
-				Instruction right = instructions.get(i - 1);
-
-				push(new ArithmeticNode(instruction, left.toNode(), right.toNode()));
+				push(new ArithmeticNode(instruction, stack.pop(), stack.pop()));
 				continue;
 			}
 
@@ -209,15 +207,8 @@ public class Stack {
 	 * @param node The node to push.
 	 */
 	public void push(Node node) {
-		if (node instanceof SinglyEndedNode) {// pop off the original nodes.
-			stack.pop();
-		} else if (node instanceof DoublyEndedNode) {
-			stack.pop();
-			stack.pop();
-		}
-
 		stack.push(node);
-
+		
 		if (root != node && node.getParent() == null) {
 			root.addChild(node);
 		}
@@ -246,7 +237,8 @@ public class Stack {
 
 	@Override
 	public String toString() {
-		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", roots="+roots.size()+"]";
+		int ratio = (int) (((double)stack.size() / (double)instructions.size()) * 100D);
+		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", roots="+roots.size()+", ratio="+ratio+"%]";
 	}
 
 	public InstructionList getInstructions() {

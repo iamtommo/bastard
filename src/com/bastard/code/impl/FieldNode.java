@@ -1,5 +1,7 @@
 package com.bastard.code.impl;
 
+import java.util.Arrays;
+
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.entry.ClassRefEntry;
 import com.bastard.cls.cpool.entry.FieldRefEntry;
@@ -18,15 +20,15 @@ public class FieldNode extends Node {
 	/**
 	 * The name of the field.
 	 */
-	private String name;
+	protected String name;
 	/**
 	 * The signature of the field.
 	 */
-	private String signature;
+	protected String signature;
 	/**
 	 * The owner of this field.
 	 */
-	private String owner;
+	protected String owner;
 	
 	public FieldNode(ConstantPool pool, FieldInstruction instruction) {
 		super(pool, instruction);
@@ -46,6 +48,6 @@ public class FieldNode extends Node {
 
 	@Override
 	public String code() {
-		return "FieldNode[owner="+owner+", name="+name+", signature="+signature+", type="+Opcode.valueOf(instruction.getOpcode() & 0xFF).toString()+", children="+children.size()+"]";
+		return "FieldNode[owner="+owner+", name="+name+", signature="+signature+", type="+Opcode.valueOf(instruction.getOpcode() & 0xFF).toString()+", children="+Arrays.toString(children.toArray())+"]";
 	}
 }
