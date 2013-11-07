@@ -26,6 +26,7 @@ public enum Opcode {
 	ALOAD_2(0x2C, BasicInstruction.class),
 	ALOAD_3(0x2D, BasicInstruction.class),
 //	ANEWARRAY(0xBD, NewObjectInstruction.class),
+	NEWARRAY(0xBC, NewObjectInstruction.class),
 	ARETURN(0xB0, BasicInstruction.class),
 	ARRAYLENGTH(0xBE, BasicInstruction.class),
 	ASTORE(0x3A, LocalVariableInstruction.class),
