@@ -84,4 +84,40 @@ public class CodeAttribute extends AbstractAttribute {
 		return stack;
 	}
 
+	public int getMaxStack() {
+		return maxStack;
+	}
+
+	public int getMaxLocals() {
+		return maxLocals;
+	}
+
+	public int getCodeLength() {
+		return codeLength;
+	}
+
+	public ByteBuffer getCode() {
+		return code;
+	}
+
+	public int getExcTableLength() {
+		return excTableLength;
+	}
+
+	public ExceptionInfo[] getExceptionTable() {
+		return exceptionTable;
+	}
+
+	public int getAttrTableLength() {
+		return attrTableLength;
+	}
+
+	public AttributeInfo[] getAttributes() {
+		return attributes;
+	}
+
+	public InstructionList getInstructionList() {
+		return instructionList;
+	}
+
 }

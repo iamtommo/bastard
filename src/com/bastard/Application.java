@@ -19,7 +19,7 @@ public class Application {
 			Enumeration<JarEntry> entries = jar.entries();
 			while(entries.hasMoreElements()) {
 				JarEntry entry = (JarEntry) entries.nextElement();
-				if (entry.getName().equals("aa.class")) {
+				if (entry.getName().equals("ah.class")) {
 					InputStream in = jar.getInputStream(entry);
 
 					byte[] tmp = new byte[in.available()];

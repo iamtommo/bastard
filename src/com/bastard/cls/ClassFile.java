@@ -86,10 +86,11 @@ public class ClassFile {
 		
 		for (int ind = 0; ind < constantPool.getSize() - 1;) {
 			byte tag = data.get();	
+			System.out.print("\t\tEntry index " + ind + ", tag " + tag);
 			EntryType type = EntryType.valueOf(tag);
 			ConstantPoolEntry entry = type.getEntryClass().newInstance();
 			entry.read(data);
-			System.out.println("\t\tEntry index " + ind + ", tag " + tag + " > " + entry.toString());
+			System.out.print(" > " + entry.toString() + "\n");
 			constantPool.addEntry(entry);
 			ind += entry.getIndexIncrement();
 		}

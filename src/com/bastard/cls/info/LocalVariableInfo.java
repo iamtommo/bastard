@@ -13,7 +13,7 @@ public class LocalVariableInfo implements Info {
 	private int startPc;
 	
 	/**
-	 * The length between startPc+length where the local variables has a value
+	 * The length between startPc+length where the local variable has a value
 	 */
 	private int length;
 	

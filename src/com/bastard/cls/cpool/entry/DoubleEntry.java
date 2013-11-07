@@ -17,7 +17,7 @@ public class DoubleEntry extends ConstantPoolEntry {
 
 	@Override
 	public void read(ByteBuffer data) {
-		this.value = data.getShort();
+		this.value = data.getLong();
 	}
 
 	@Override
