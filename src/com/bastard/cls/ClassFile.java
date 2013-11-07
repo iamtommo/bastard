@@ -89,6 +89,7 @@ public class ClassFile {
 			EntryType type = EntryType.valueOf(tag);
 			ConstantPoolEntry entry = type.getEntryClass().newInstance();
 			entry.read(data);
+			System.out.println("\t\tEntry index " + ind + ", tag " + tag + " > " + entry.toString());
 			constantPool.addEntry(entry);
 			ind += entry.getIndexIncrement();
 		}
