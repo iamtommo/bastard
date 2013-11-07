@@ -14,6 +14,7 @@ import com.bastard.instruction.impl.NewObjectInstruction;
 import com.bastard.instruction.impl.PushInstruction;
 import com.bastard.instruction.impl.StackInstruction;
 import com.bastard.instruction.impl.ThrowInstruction;
+import com.bastard.instruction.impl.WideInstruction;
 
 
 public enum Opcode {
@@ -218,9 +219,9 @@ public enum Opcode {
 //	SALOAD(0x35, BasicInstruction.class),
 //	SASTORE(0x56, BasicInstruction.class),
 	SIPUSH(0x11, PushInstruction.class),
-	SWAP(0x5F, StackInstruction.class);
+	SWAP(0x5F, StackInstruction.class),
 	//TABLESWITCH(0xAA, Instruction.class),
-	//WIDE(0xC4, Instruction.class);
+	WIDE(0xC4, WideInstruction.class);
 
 	private int opcode;
 	private Class<? extends Instruction> instructionClass;
