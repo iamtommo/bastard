@@ -8,7 +8,7 @@ import com.bastard.instruction.Opcode;
 public class ArithmeticNode extends DoublyEndedNode {
 
 	public ArithmeticNode(Instruction instruction, Node left, Node right) {
-		super(null, instruction, left, right);
+		super(instruction.getPool(), instruction, left, right);
 		System.out.println(compute());
 	}
 	
@@ -22,7 +22,6 @@ public class ArithmeticNode extends DoublyEndedNode {
 		Number rightValue = null;
 		
 		if (left instanceof LdcNode) {
-			leftValue = (Number) ((LdcNode)left).getConstant();
 		} else if (left instanceof PushNode) {
 			leftValue = (Number) ((PushNode)left).getValue();
 		} else if (left instanceof FieldNode) {
@@ -30,11 +29,11 @@ public class ArithmeticNode extends DoublyEndedNode {
 		}
 		
 		if (right instanceof LdcNode) {
-			rightValue = (Number) ((LdcNode)left).getConstant();
+			rightValue = (Number) ((LdcNode)right).getConstant();
 		} else if (right instanceof PushNode) {
-			rightValue = (Number) ((PushNode)left).getValue();
+			rightValue = (Number) ((PushNode)right).getValue();
 		} else if (right instanceof FieldNode) {
-			
+			FieldNode node = (FieldNode) right;
 		}
 		
 		if (leftValue == null || rightValue == null) {
@@ -67,7 +66,7 @@ public class ArithmeticNode extends DoublyEndedNode {
 		case "^":
 			return leftValue.longValue() ^ rightValue.longValue();
 		}
-		return leftValue.longValue() + rightValue.longValue();
+		return null;
 	}
 
 	public String getOperation() {
