@@ -1,5 +1,6 @@
 package com.bastard.instruction;
 
+import com.bastard.instruction.impl.ANewArrayInstruction;
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
 import com.bastard.instruction.impl.CastInstruction;
@@ -25,7 +26,7 @@ public enum Opcode {
 	ALOAD_1(0x2B, BasicInstruction.class),
 	ALOAD_2(0x2C, BasicInstruction.class),
 	ALOAD_3(0x2D, BasicInstruction.class),
-//	ANEWARRAY(0xBD, NewObjectInstruction.class),
+	ANEWARRAY(0xBD, ANewArrayInstruction.class),
 	NEWARRAY(0xBC, NewObjectInstruction.class),
 	ARETURN(0xB0, BasicInstruction.class),
 	ARRAYLENGTH(0xBE, BasicInstruction.class),
@@ -218,7 +219,7 @@ public enum Opcode {
 //	RET(0xA9, BasicInstruction.class),
 	RETURN(0xB1, BasicInstruction.class),
 //	SALOAD(0x35, BasicInstruction.class),
-//	SASTORE(0x56, BasicInstruction.class),
+	SASTORE(0x56, BasicInstruction.class),
 	SIPUSH(0x11, PushInstruction.class),
 	SWAP(0x5F, StackInstruction.class),
 	//TABLESWITCH(0xAA, Instruction.class),
