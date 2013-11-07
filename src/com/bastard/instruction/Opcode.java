@@ -1,5 +1,6 @@
 package com.bastard.instruction;
 
+import com.bastard.instruction.impl.ANewArrayInstruction;
 import com.bastard.instruction.impl.ArithmeticInstruction;
 import com.bastard.instruction.impl.BasicInstruction;
 import com.bastard.instruction.impl.CastInstruction;
@@ -14,6 +15,7 @@ import com.bastard.instruction.impl.NewObjectInstruction;
 import com.bastard.instruction.impl.PushInstruction;
 import com.bastard.instruction.impl.StackInstruction;
 import com.bastard.instruction.impl.ThrowInstruction;
+import com.bastard.instruction.impl.WideInstruction;
 
 
 public enum Opcode {
@@ -24,7 +26,8 @@ public enum Opcode {
 	ALOAD_1(0x2B, BasicInstruction.class),
 	ALOAD_2(0x2C, BasicInstruction.class),
 	ALOAD_3(0x2D, BasicInstruction.class),
-//	ANEWARRAY(0xBD, NewObjectInstruction.class),
+	ANEWARRAY(0xBD, ANewArrayInstruction.class),
+	NEWARRAY(0xBC, NewObjectInstruction.class),
 	ARETURN(0xB0, BasicInstruction.class),
 	ARRAYLENGTH(0xBE, BasicInstruction.class),
 	ASTORE(0x3A, LocalVariableInstruction.class),
@@ -47,8 +50,8 @@ public enum Opcode {
 	DALOAD(0x31, BasicInstruction.class),
 	AALOAD(0x32, BasicInstruction.class),
 	DASTORE(0x52, BasicInstruction.class),
-//	DCMPG(0x98, BasicInstruction.class),
-//	DCMPL(0x97, BasicInstruction.class),
+	DCMPG(0x98, ArithmeticInstruction.class),
+	DCMPL(0x97, ArithmeticInstruction.class),
 	DCONST_0(0x0E, BasicInstruction.class),
 	DCONST_1(0x0F, BasicInstruction.class),
 	DDIV(0x6F, ArithmeticInstruction.class),
@@ -70,7 +73,7 @@ public enum Opcode {
 	DUP(0x59, StackInstruction.class),
 //	DUP_X1(0x5A, StackInstruction.class),
 //	DUP_X2(0x5B, StackInstruction.class),
-//	DUP2(0x5C, StackInstruction.class),
+	DUP2(0x5C, StackInstruction.class),
 //	DUP2_X1(0x5D, StackInstruction.class),
 //	DUP2_X2(0x5E, StackInstruction.class),
 	F2D(0x8D, CastInstruction.class),
@@ -201,7 +204,7 @@ public enum Opcode {
 	LSTORE_2(0x41, BasicInstruction.class),
 	LSTORE_3(0x42, BasicInstruction.class),
 	LSUB(0x65, ArithmeticInstruction.class),
-	LUSHR(0x7D,ArithmeticInstruction.class),
+	LUSHR(0x7D, ArithmeticInstruction.class),
 	LXOR(0x83, ArithmeticInstruction.class),
 	MONITORENTER(0xC2, BasicInstruction.class),
 	MONITOREXIT(0xC3, BasicInstruction.class),
@@ -217,10 +220,12 @@ public enum Opcode {
 	RETURN(0xB1, BasicInstruction.class),
 	SALOAD(0x35, BasicInstruction.class),
 	SASTORE(0x56, BasicInstruction.class),
-	SIPUSH(0x11, PushInstruction.class);
-//	SWAP(0x5F, StackInstruction.class);
+	SIPUSH(0x11, PushInstruction.class),
+	SWAP(0x5F, StackInstruction.class),
 	//TABLESWITCH(0xAA, Instruction.class),
-	//WIDE(0xC4, Instruction.class);
+	WIDE(0xC4, WideInstruction.class),
+	UNUSED_CB(0xCB, BasicInstruction.class),
+	UNUSED_FD(0xFD, BasicInstruction.class);
 
 	private int opcode;
 	private Class<? extends Instruction> instructionClass;
