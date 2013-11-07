@@ -89,16 +89,17 @@ public class ClassFile {
 			EntryType type = EntryType.valueOf(tag);
 			ConstantPoolEntry entry = type.getEntryClass().newInstance();
 			entry.read(data);
+			System.out.println("\t\tEntry index " + ind + ", tag " + tag + " > " + entry.toString());
 			constantPool.addEntry(entry);
 			ind += entry.getIndexIncrement();
 		}
 		
 		accessFlags = data.getShort();
-		isPublic = (accessFlags & 0x0001) > 0;
-		isFinal = (accessFlags & 0x0010) > 0;
-		isSuper = (accessFlags & 0x0020) > 0;
-		isInterface = (accessFlags & 0x0200) > 0;
-		isAbstract = (accessFlags & 0x0400) > 0;
+		isPublic = (accessFlags & Flags.PUBLIC) > 0;
+		isFinal = (accessFlags & Flags.FINAL) > 0;
+		isSuper = (accessFlags & Flags.CLASS_SUPER) > 0;
+		isInterface = (accessFlags & Flags.CLASS_INTERFACE) > 0;
+		isAbstract = (accessFlags & Flags.CLASS_ABSTRACT) > 0;
 		System.out.print("\tAccess flags: " + Integer.toHexString(accessFlags) + " - ");
 		System.out.println("public=" + isPublic + ", final=" + isFinal + ", super=" + isSuper +
 				", interface=" + isInterface + ", abstract=" + isAbstract);

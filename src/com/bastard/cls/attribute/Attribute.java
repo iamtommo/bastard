@@ -5,7 +5,11 @@ public enum Attribute {
 	NOT_IMPLEMENTED("", AbstractAttribute.class),
 	CODE("Code", CodeAttribute.class),
 	CONSTANT_VALUE("ConstantValue", ConstantValueAttribute.class),
-	LINE_NUMBER_TABLE("LineNumberTable", LineNumberTableAttribute.class);
+	LINE_NUMBER_TABLE("LineNumberTable", LineNumberTableAttribute.class),
+	INNER_CLASSES("InnerClasses", InnerClassesAttribute.class),
+	ENCLOSING_METHOD("EnclosingMethod", EnclosingMethodAttribute.class),
+	LOCAL_VARIABLE_TABLE("LocalVariableTable", LocalVariableTableAttribute.class),
+	LOCAL_VARIABLE_TYPE_TABLE("LocalVariableTypeTable", LocalVariableTypeTableAttribute.class);
 	
 	Class<? extends AbstractAttribute> attributeClass;
 	String tag;

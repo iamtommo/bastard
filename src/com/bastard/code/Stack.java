@@ -234,7 +234,6 @@ public class Stack {
 		System.out.println(Indent.$(indentations) + "}");
 	}
 
-
 	@Override
 	public String toString() {
 		int ratio = (int) (((double)stack.size() / (double)instructions.size()) * 100D);
