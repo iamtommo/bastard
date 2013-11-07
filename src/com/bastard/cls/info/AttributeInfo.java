@@ -58,7 +58,7 @@ public class AttributeInfo implements Info {
 		if (attribute != null) {
 			attribute.print(indentations + 1);
 		} else {
-			System.out.println(Indent.$(indentations) + "UnknownAttribute[null]");
+			System.out.println(Indent.$(indentations + 1) + "UnimplementedAttribute[null]");
 		}
 	}
 	
