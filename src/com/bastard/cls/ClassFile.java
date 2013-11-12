@@ -84,7 +84,7 @@ public class ClassFile {
 		constantPool = new ConstantPool(cSize);
 		Application.log("\tConstant pool size: " + cSize);
 		
-		for (int ind = 0; ind < constantPool.getSize() - 1;) {
+		for (int ind = 1; ind < constantPool.getSize();) {
 			byte tag = data.get();	
 			System.out.print("\t\tEntry index " + ind + ", tag " + tag);
 			EntryType type = EntryType.valueOf(tag);

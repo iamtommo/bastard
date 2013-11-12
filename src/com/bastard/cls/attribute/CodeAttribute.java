@@ -8,7 +8,6 @@ import com.bastard.cls.info.ExceptionInfo;
 import com.bastard.code.Stack;
 import com.bastard.code.graph.Graph;
 import com.bastard.code.graph.JumpGraph;
-import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
 import com.bastard.util.Indent;
 
