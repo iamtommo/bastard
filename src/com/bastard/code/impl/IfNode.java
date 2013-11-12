@@ -1,6 +1,6 @@
 package com.bastard.code.impl;
 
-import com.bastard.code.DoublyEndedNode;
+import com.bastard.code.BidirectionalNode;
 import com.bastard.code.Node;
 import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.JumpInstruction;
@@ -10,7 +10,7 @@ import com.bastard.instruction.impl.JumpInstruction;
  * Represents if statement instructions.
  * @author Shawn Davies
  */
-public class IfNode extends DoublyEndedNode {
+public class IfNode extends BidirectionalNode {
 
 	/**
 	 * The jump destination.

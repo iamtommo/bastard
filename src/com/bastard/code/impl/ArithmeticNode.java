@@ -1,11 +1,11 @@
 package com.bastard.code.impl;
 
-import com.bastard.code.DoublyEndedNode;
+import com.bastard.code.BidirectionalNode;
 import com.bastard.code.Node;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
 
-public class ArithmeticNode extends DoublyEndedNode {
+public class ArithmeticNode extends BidirectionalNode {
 
 	public ArithmeticNode(Instruction instruction, Node left, Node right) {
 		super(instruction.getPool(), instruction, left, right);

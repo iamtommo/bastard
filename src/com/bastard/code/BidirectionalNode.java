@@ -4,12 +4,12 @@ import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 
 /**
- * A single ended node, otherwise known as a node who
+ * A bi-directional node, otherwise known as a node who
  * operates with two operands.
  * 
  * @author Shawn Davies<sodxeh@gmail.com>
  */
-public class DoublyEndedNode extends Node {
+public class BidirectionalNode extends Node {
 	
 	/**
 	 * The left operand.
@@ -20,7 +20,7 @@ public class DoublyEndedNode extends Node {
 	 */
 	protected Node right;
 
-	public DoublyEndedNode(ConstantPool pool, Instruction instruction, Node left, Node right) {
+	public BidirectionalNode(ConstantPool pool, Instruction instruction, Node left, Node right) {
 		super(pool, instruction);
 		this.left = left;
 		this.right = right;

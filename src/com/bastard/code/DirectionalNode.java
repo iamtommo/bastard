@@ -4,19 +4,19 @@ import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.instruction.Instruction;
 
 /**
- * A single ended node, otherwise known as a node who
+ * A directional node, otherwise known as a node who
  * operates with a single operand.
  * 
  * @author Shawn Davies<sodxeh@gmail.com>
  */
-public class SinglyEndedNode extends Node {
+public class DirectionalNode extends Node {
 	
 	/**
 	 * The node.
 	 */
 	protected Node node;
 
-	public SinglyEndedNode(ConstantPool pool, Instruction instruction, Node node) {
+	public DirectionalNode(ConstantPool pool, Instruction instruction, Node node) {
 		super(pool, instruction);
 		this.node = node;
 		
