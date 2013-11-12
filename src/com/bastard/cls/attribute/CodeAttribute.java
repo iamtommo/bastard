@@ -83,9 +83,7 @@ public class CodeAttribute extends AbstractAttribute {
 			attributes[i].print(indentations + 1);
 		}
 		
-		for (Instruction insn : instructionList) {
-			insn.print(indentations + 1);
-		}
+		instructionList.print(indentations + 1);
 		
 		stack.print(indentations + 1);
 	}

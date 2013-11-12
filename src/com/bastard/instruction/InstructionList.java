@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.LinkedList;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.util.Indent;
 
 /**
  * The bytecode instruction list.
@@ -49,6 +50,14 @@ public class InstructionList extends LinkedList<Instruction> {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void print(int indentations) {
+		for (int i = 0; i < size(); i++) {
+			Instruction insn = get(i);
+			System.out.print(Indent.$(indentations) + "" + i + ": ");
+			insn.print(0);
 		}
 	}
 
