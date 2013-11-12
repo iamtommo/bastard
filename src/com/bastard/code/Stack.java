@@ -8,6 +8,7 @@ import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.CallMethodNode;
 import com.bastard.code.impl.CastNode;
 import com.bastard.code.impl.FieldNode;
+import com.bastard.code.impl.IfNode;
 import com.bastard.code.impl.JumpNode;
 import com.bastard.code.impl.LdcNode;
 import com.bastard.code.impl.LocalVariableNode;
@@ -97,16 +98,19 @@ public class Stack {
 	 */
 	private final InstructionList instructions;
 	/**
-	 * The root node of the stack.
+	 * The current root node of the stack.
 	 */
 	private Node root;
-
+	/**
+	 * A mapping of last nodes to their roots.
+	 */
+	private final Map<Node, Node> roots = new HashMap<Node, Node>();
+	
 	public Stack(InstructionList instructions) {
 		this.instructions = instructions;
 		construct();
 	}
 
-	private final Map<Node, Node> roots = new HashMap<Node, Node>();
 
 	/**
 	 * Fills the stack with the most basic form of node pairs.
@@ -148,7 +152,7 @@ public class Stack {
 				push(collapseMethod(new MethodNode(instructions.getConstantPool(), (MethodInstruction) instruction)));
 				continue;
 			}
-
+			
 			if (instruction instanceof LdcInstruction) {
 				push(new LdcNode(instructions.getConstantPool(), (LdcInstruction) instruction));
 				continue;
@@ -178,10 +182,11 @@ public class Stack {
 						stack.pop();
 					}
 					
-					JumpNode node = new JumpNode((JumpInstruction) instruction);
-					push(node);
-					continue;
+					push(new JumpNode((JumpInstruction) instruction));
+				} else if (name.contains("IF")) {
+					push(new IfNode((JumpInstruction) instruction, stack.pop(), stack.pop()));
 				}
+				continue;
 			}
 		}
 	}
@@ -233,15 +238,24 @@ public class Stack {
 		}
 		System.out.println(Indent.$(indentations) + "}");
 	}
+	
+	public int size() {
+		return stack.size();
+	}
 
 	@Override
 	public String toString() {
-		int ratio = (int) (((double)stack.size() / (double)instructions.size()) * 100D);
-		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", roots="+roots.size()+", ratio="+ratio+"%]";
+		int compression = (int) (((double)stack.size() / (double)instructions.size()) * 100D);
+		return "Stack[size="+stack.size()+", instructions="+instructions.size()+", roots="+roots.size()+", compression="+compression+"%]";
 	}
 
 	public InstructionList getInstructions() {
 		return instructions;
+	}
+
+
+	public Node get(int index) {
+		return stack.get(index);
 	}
 
 

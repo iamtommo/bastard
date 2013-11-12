@@ -9,64 +9,6 @@ public class ArithmeticNode extends DoublyEndedNode {
 
 	public ArithmeticNode(Instruction instruction, Node left, Node right) {
 		super(instruction.getPool(), instruction, left, right);
-		System.out.println(compute());
-	}
-	
-	/**
-	 * Attempts to compute the arithmetic operation between each node end.
-	 * @return The computed number, or null if there was a failed computation.
-	 */
-	public Number compute() {
-		
-		Number leftValue = null;
-		Number rightValue = null;
-		
-		if (left instanceof LdcNode) {
-		} else if (left instanceof PushNode) {
-			leftValue = (Number) ((PushNode)left).getValue();
-		} else if (left instanceof FieldNode) {
-			
-		}
-		
-		if (right instanceof LdcNode) {
-			rightValue = (Number) ((LdcNode)right).getConstant();
-		} else if (right instanceof PushNode) {
-			rightValue = (Number) ((PushNode)right).getValue();
-		} else if (right instanceof FieldNode) {
-			FieldNode node = (FieldNode) right;
-		}
-		
-		if (leftValue == null || rightValue == null) {
-			return null;
-		}
-		
-		if (getOperation().equals("/") && rightValue.longValue() == 0) {
-			throw new IllegalStateException("Divide by 0");
-		}
-		
-		switch(getOperation()) {
-		case "+":
-			return leftValue.longValue() + rightValue.longValue();
-		case "-":
-			return leftValue.longValue() - rightValue.longValue();
-		case "*":
-			return leftValue.longValue() * rightValue.longValue();
-		case "/":
-			return leftValue.longValue() / rightValue.longValue();
-		case "<<":
-			return leftValue.longValue() << rightValue.longValue();
-		case ">>":
-			return leftValue.longValue() >> rightValue.longValue();
-		case ">>>":
-			return leftValue.longValue() >>> rightValue.longValue();
-		case "&":
-			return leftValue.longValue() & rightValue.longValue();
-		case "|":
-			return leftValue.longValue() | rightValue.longValue();
-		case "^":
-			return leftValue.longValue() ^ rightValue.longValue();
-		}
-		return null;
 	}
 
 	public String getOperation() {

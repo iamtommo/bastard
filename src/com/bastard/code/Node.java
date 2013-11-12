@@ -42,7 +42,9 @@ public class Node {
 	 */
 	public void addChild(Node node) {
 		node.setParent(this);
-		children.add(node);
+		if (!children.contains(node)) {
+			children.add(node);
+		}
 	}
 
 	/**

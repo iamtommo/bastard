@@ -6,6 +6,8 @@ import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.AttributeInfo;
 import com.bastard.cls.info.ExceptionInfo;
 import com.bastard.code.Stack;
+import com.bastard.code.graph.Graph;
+import com.bastard.code.graph.JumpGraph;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
 import com.bastard.util.Indent;
@@ -22,6 +24,11 @@ public class CodeAttribute extends AbstractAttribute {
 	private AttributeInfo[] attributes;
 	private InstructionList instructionList = new InstructionList();
 
+	@SuppressWarnings("unchecked")
+	private Class<Graph>[] graphs = new Class[] {
+		JumpGraph.class
+	};
+	
 	private Stack stack;
 	
 	public CodeAttribute(int nameIndex, int length) {
@@ -37,8 +44,6 @@ public class CodeAttribute extends AbstractAttribute {
 		data.get(b);
 		code = ByteBuffer.wrap(b);
 		instructionList.read(pool, code);
-		stack = new Stack(instructionList);
-		
 		excTableLength = data.getShort();
 		exceptionTable = new ExceptionInfo[excTableLength];
 		for (int i = 0; i < exceptionTable.length; i++) {
@@ -50,6 +55,18 @@ public class CodeAttribute extends AbstractAttribute {
 		for (int i = 0; i < attributes.length; i++) {
 			AttributeInfo ai = new AttributeInfo().read(pool, data);
 			attributes[i] = ai;
+		}
+		
+		stack = new Stack(instructionList);
+		
+		for (Class<Graph> cls : graphs) {
+			try {
+				Graph graph = (Graph) cls.getConstructor(CodeAttribute.class, Stack.class).newInstance(this, stack);
+				
+				graph.construct();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return this;
 	}

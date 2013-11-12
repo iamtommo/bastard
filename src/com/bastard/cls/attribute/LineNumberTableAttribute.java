@@ -33,6 +33,10 @@ public class LineNumberTableAttribute extends AbstractAttribute {
 		}
 	}
 	
+	public LineNumberInfo[] getTable() {
+		return lineNumberTable;
+	}
+	
 	@Override
 	public String toString() {
 		return "LineNumberTableAttribute[tableLen=" + lineNumberTableLen + "]";

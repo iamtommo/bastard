@@ -15,10 +15,19 @@ public class JumpNode extends Node {
 	 * TODO: Change this to Node and define by getting the node at JumpInstruction#jumpLocation.
 	 */
 	private int dst;
+	private LabelNode label;
 	
 	public JumpNode(JumpInstruction instruction) {
 		super(null, instruction);
 		this.dst = instruction.getJumpLocation();
+	}
+	
+	public LabelNode getLabel() {
+		return label;
+	}
+	
+	public void setLabel(LabelNode label) {
+		this.label = label;
 	}
 	
 	public int getDestination() {
@@ -27,6 +36,6 @@ public class JumpNode extends Node {
 	
 	@Override
 	public String code() {
-		return "JumpNode[dst="+dst+", children="+children.size()+"]";
+		return "JumpNode[dst="+dst+", label="+label+", children="+children.size()+"]";
 	}
 }

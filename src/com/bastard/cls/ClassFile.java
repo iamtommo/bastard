@@ -56,7 +56,7 @@ public class ClassFile {
 	}
 
 	public void read() throws Exception {
-		System.out.println(name+" {");
+		System.out.println(name+"\n{");
 		if (data == null && file != null) {
 			readFileData();
 		}
