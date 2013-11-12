@@ -29,4 +29,8 @@ public class LabelNode extends Node {
 	public boolean isRoot() {
 		return root;
 	}
+	
+	public int getStartPc() {
+		return startPc;
+	}
 }

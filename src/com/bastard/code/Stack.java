@@ -56,6 +56,10 @@ public class Stack {
 		 * The base stack.
 		 */
 		private Stack stack;
+		/**
+		 * The stack height.
+		 */
+		private int height = 0;
 
 		public NodeStack(Stack stack) {
 			super();
@@ -71,6 +75,7 @@ public class Stack {
 				stack.roots.put(n, n);
 				stack.root = n;
 			}
+			height++;
 			return n;
 		}
 
@@ -84,8 +89,12 @@ public class Stack {
 			if (stack.root == node) {
 				stack.root = null;
 			}
-
+			height--;
 			return node;
+		}
+		
+		public int getHeight() {
+			return height;
 		}
 	}
 
@@ -258,5 +267,9 @@ public class Stack {
 		return stack.get(index);
 	}
 
+
+	public int getHeight() {
+		return ((NodeStack<Node>) stack).getHeight();
+	}
 
 }
