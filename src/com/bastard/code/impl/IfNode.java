@@ -40,6 +40,10 @@ public class IfNode extends BidirectionalNode {
 		this.label = label;
 	}
 	
+	public void setDestination(int dst) {
+		this.dst = dst;
+	}
+
 	@Override
 	public String code() {
 		return "IfNode[dst="+dst+", type="+Opcode.valueOf(instruction.getOpcode() & 0xFF).name()+", left="+left.code()+", right="+right.code()+", label="+label+"]";

@@ -198,6 +198,32 @@ public class Stack {
 				continue;
 			}
 		}
+		
+		for (Node n : stack) {
+			if (n instanceof IfNode) {
+				IfNode ifn = (IfNode) n;
+				ifn.setDestination(ifn.getDestination() - getCollapsedInstructions());
+			}
+		}
+	}
+	
+	/**
+	 * Calculates how many instructions have been collapsed into Nodes
+	 * to be able to resolve code array indexes to stack indexes.
+	 * @return
+	 */
+	public int getCollapsedInstructions() {
+		int collapsed = 1;
+		for (int i = 0; i < stack.size(); i++) {
+			Node n = stack.get(i);
+			if (n instanceof BidirectionalNode) {
+				collapsed += 2;
+			} else if (n instanceof CallMethodNode) {
+				CallMethodNode cmn = (CallMethodNode) n;
+				collapsed += cmn.getParameters().length;
+			}
+		}
+		return collapsed;
 	}
 
 	/**
@@ -240,7 +266,7 @@ public class Stack {
 				System.out.println(Indent.$(indentations + 1) + "{");
 
 				for (Node child : roots.get(node).children) {
-					System.out.println(Indent.$(indentations + 2) + child.toString());
+					System.out.println(Indent.$(indentations + 2) + "" + roots.get(node).children.indexOf(child) + ": " + child.toString());
 				}
 				System.out.println(Indent.$(indentations + 1) + "}");
 			}
