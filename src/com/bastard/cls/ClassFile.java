@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import com.bastard.Application;
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.ConstantPoolEntry;
 import com.bastard.cls.cpool.EntryType;
@@ -66,23 +65,23 @@ public class ClassFile {
 		magic |= ((byte) data.get() & 0xBA) << 8;
 		magic |= ((byte) data.get() & 0xBE);
 		if (magic == MAGIC_NUMBER) {
-			Application.log("\tMagic number: " + Integer.toHexString(magic));
+			System.out.println("\tMagic number: " + Integer.toHexString(magic));
 		} else {
-			Application.log("\tIncorrect magic number: " + Integer.toHexString(magic));
+			System.out.println("\tIncorrect magic number: " + Integer.toHexString(magic));
 			throw new Exception();
 		}
 		
 		minorVersion = data.getShort();
-		Application.log("\tClass minor version: " + minorVersion);
+		System.out.println("\tClass minor version: " + minorVersion);
 		
 		majorVersion |= data.get() << 8;
 		majorVersion |= data.get();
-		Application.log("\tClass major version: " + majorVersion);
+		System.out.println("\tClass major version: " + majorVersion);
 		
 		//Entries start at index 1 therefore size is always greater than actual entries
 		int cSize = data.getShort();
 		constantPool = new ConstantPool(cSize);
-		Application.log("\tConstant pool size: " + cSize);
+		System.out.println("\tConstant pool size: " + cSize);
 		
 		for (int ind = 1; ind < constantPool.getSize();) {
 			byte tag = data.get();	
@@ -156,12 +155,12 @@ public class ClassFile {
 			}
 			in.close();
 			data = ByteBuffer.wrap(out.toByteArray());
-			Application.log("Read " + data.capacity() + " bytes from file.");
+			System.out.println("Read " + data.capacity() + " bytes from file.");
 		} catch (FileNotFoundException e) {
-			Application.logerr("File not found!");
+			System.err.println("File not found!");
 			e.printStackTrace();
 		} catch (IOException e) {
-			Application.logerr("Error reading file!");
+			System.err.println("Error reading file!");
 			e.printStackTrace();
 		}	
 	}
