@@ -1,7 +1,7 @@
-BASTARD - Bytecode Abstract Syntax Tree Agricultural Research Division
+BASTARD
 =======
-
-BASTARD is a free, open-source bytecode manipulation library licensed under the GNU LGPL.
+BASTARD stands for Bytecode Abstract Syntax Tree and Resursive Data.
+It is a free, open-source bytecode manipulation library licensed under the GNU LGPL.
 
 ### How to use
 * Load a class file into bastard
