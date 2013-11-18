@@ -2,11 +2,11 @@ package com.bastard.cls.info;
 
 import java.nio.ByteBuffer;
 
-import com.bastard.cls.attribute.AbstractAttribute;
-import com.bastard.cls.attribute.Attribute;
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.cpool.ConstantPoolEntry;
 import com.bastard.cls.cpool.entry.UTF8StringEntry;
+import com.bastard.cls.info.attribute.AbstractAttribute;
+import com.bastard.cls.info.attribute.Attribute;
 import com.bastard.util.Indent;
 
 /**

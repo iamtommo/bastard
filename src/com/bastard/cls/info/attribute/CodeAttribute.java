@@ -1,10 +1,9 @@
-package com.bastard.cls.attribute;
+package com.bastard.cls.info.attribute;
 
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.AttributeInfo;
-import com.bastard.cls.info.ExceptionInfo;
 import com.bastard.code.Stack;
 import com.bastard.code.graph.Graph;
 import com.bastard.code.graph.JumpGraph;

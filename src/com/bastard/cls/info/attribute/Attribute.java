@@ -1,4 +1,5 @@
-package com.bastard.cls.attribute;
+package com.bastard.cls.info.attribute;
+
 
 
 public enum Attribute {
@@ -11,6 +12,7 @@ public enum Attribute {
 	LOCAL_VARIABLE_TABLE("LocalVariableTable", LocalVariableTableAttribute.class),
 	LOCAL_VARIABLE_TYPE_TABLE("LocalVariableTypeTable", LocalVariableTypeTableAttribute.class),
 	SOURCE_FILE("SourceFile", SourceFileAttribute.class);
+	//STACK_MAP_TABLE("StackMapTable", StackMapTableAttribute.class);
 	
 	Class<? extends AbstractAttribute> attributeClass;
 	String tag;

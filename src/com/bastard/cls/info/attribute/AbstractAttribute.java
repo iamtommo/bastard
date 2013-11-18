@@ -1,10 +1,11 @@
-package com.bastard.cls.attribute;
+package com.bastard.cls.info.attribute;
 
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.cls.info.Info;
 
-public abstract class AbstractAttribute {
+public abstract class AbstractAttribute implements Info {
 	
 	private int nameIndex;
 	private int length;

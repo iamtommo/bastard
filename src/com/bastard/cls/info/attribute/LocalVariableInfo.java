@@ -1,11 +1,12 @@
-package com.bastard.cls.info;
+package com.bastard.cls.info.attribute;
 
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.cls.info.Info;
 import com.bastard.util.Indent;
 
-public class LocalVariableTypeInfo implements Info {
+public class LocalVariableInfo implements Info {
 	
 	/**
 	 * The start pc where the local variable first has a value
@@ -13,7 +14,7 @@ public class LocalVariableTypeInfo implements Info {
 	private int startPc;
 	
 	/**
-	 * The length between startPc+length where the local variables has a value
+	 * The length between startPc+length where the local variable has a value
 	 */
 	private int length;
 	
@@ -23,9 +24,9 @@ public class LocalVariableTypeInfo implements Info {
 	private int nameIndex;
 	
 	/**
-	 * Index in the constant pool of the UTF8StringEntry representing the field signature
+	 * Index in the constant pool of the UTF8StringEntry representing the field descriptor
 	 */
-	private int signatureIndex;
+	private int descriptorIndex;
 	
 	/**
 	 * The index of this local variable in the current stack frame
@@ -35,11 +36,11 @@ public class LocalVariableTypeInfo implements Info {
 	private int index;
 
 	@Override
-	public LocalVariableTypeInfo read(ConstantPool pool, ByteBuffer data) {
+	public LocalVariableInfo read(ConstantPool pool, ByteBuffer data) {
 		this.startPc = data.getShort();
 		this.length = data.getShort();
 		this.nameIndex = data.getShort();
-		this.signatureIndex = data.getShort();
+		this.descriptorIndex = data.getShort();
 		this.index = data.getShort();
 		return this;
 	}
@@ -51,7 +52,7 @@ public class LocalVariableTypeInfo implements Info {
 	
 	@Override
 	public String toString() {
-		return "LocalVariableTypeInfo[startPc=" + startPc + ", len=" + length + ", nameIndex=" + nameIndex + ", signatureIndex=" + signatureIndex 
+		return "LocalVariableInfo[startPc=" + startPc + ", len=" + length + ", nameIndex=" + nameIndex + ", descriptorIndex=" + descriptorIndex 
 				+ ", index=" + index + "]";
 	}
 

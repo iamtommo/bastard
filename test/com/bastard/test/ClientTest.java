@@ -20,7 +20,7 @@ public class ClientTest {
 		Enumeration<JarEntry> entries = jar.entries();
 		while(entries.hasMoreElements()) {
 			JarEntry entry = (JarEntry) entries.nextElement();
-			if (entry.getName().equals("f.class")) {
+			if (entry.getName().equals("av.class")) {
 				InputStream in = jar.getInputStream(entry);
 
 				byte[] tmp = new byte[in.available()];
@@ -28,6 +28,7 @@ public class ClientTest {
 
 				ClassFile cls = new ClassFile(entry.getName(), tmp);
 				cls.read();
+				System.out.println(cls.getConstantPool().getEntries()[847].toString());
 			}
 		}
 	}

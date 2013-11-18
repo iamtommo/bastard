@@ -1,8 +1,9 @@
-package com.bastard.cls.info;
+package com.bastard.cls.info.attribute;
 
 import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
+import com.bastard.cls.info.Info;
 import com.bastard.util.Indent;
 
 public class InnerClassInfo implements Info {

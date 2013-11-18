@@ -1,6 +1,6 @@
 package com.bastard.code.graph;
 
-import com.bastard.cls.attribute.CodeAttribute;
+import com.bastard.cls.info.attribute.CodeAttribute;
 import com.bastard.code.Node;
 import com.bastard.code.Stack;
 import com.bastard.code.impl.IfNode;
