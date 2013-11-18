@@ -16,5 +16,5 @@ It is a free, open-source bytecode manipulation library licensed under the GNU L
 ~~~
 
 ### Authors
-* Shawn Davies<sodxeh@gmail.com>
-* Tommo<iamtommo@gmail.com>
+* Shawn Davies <sodxeh@gmail.com>
+* Tommo <iamtommo@gmail.com>
