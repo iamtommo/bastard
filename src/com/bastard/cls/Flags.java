@@ -33,4 +33,12 @@ public class Flags {
 	public static final int FIELD_VOLATILE = 0x0040;
 	public static final int FIELD_TRANSIENT = 0x0080;
 	
+	/*
+	 * Method specific flags
+	 */
+	public static final int METHOD_SYNCHRONIZED = 0x0020;
+	public static final int METHOD_NATIVE = 0x0100;
+	public static final int METHOD_ABSTRACT = 0x0400;
+	public static final int METHOD_STRICT = 0x0800;
+	
 }

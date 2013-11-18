@@ -9,7 +9,8 @@ public enum Attribute {
 	INNER_CLASSES("InnerClasses", InnerClassesAttribute.class),
 	ENCLOSING_METHOD("EnclosingMethod", EnclosingMethodAttribute.class),
 	LOCAL_VARIABLE_TABLE("LocalVariableTable", LocalVariableTableAttribute.class),
-	LOCAL_VARIABLE_TYPE_TABLE("LocalVariableTypeTable", LocalVariableTypeTableAttribute.class);
+	LOCAL_VARIABLE_TYPE_TABLE("LocalVariableTypeTable", LocalVariableTypeTableAttribute.class),
+	SOURCE_FILE("SourceFile", SourceFileAttribute.class);
 	
 	Class<? extends AbstractAttribute> attributeClass;
 	String tag;
