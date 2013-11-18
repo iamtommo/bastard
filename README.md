@@ -1,6 +1,6 @@
-BASTARD - Bytecode Abstract Syntax Tree Agricultural Research Division
+BASTARD
 =======
-
+Bytecode Abstract Syntax Tree and Resursive Data
 BASTARD is a free, open-source bytecode manipulation library licensed under the GNU LGPL.
 
 ### How to use
