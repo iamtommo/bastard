@@ -1,7 +1,6 @@
 package com.bastard.instruction.impl;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class LabelInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return "LabelInstruction[startPc="+startPc+", isRoot="+(attributes.get("root") == null ? "false" : "true")+", isSink="+(attributes.get("sink") == null ? "false" : "true")+"]";
+		return "LabelInstruction[startPc="+startPc+", isRoot="+((boolean) attributes.get("root") ? "true" : "false")+", isSink="+(attributes.get("sink") == null ? "false" : "true")+"]";
 	}
 
 	public void setAttribute(String key, Object value) {

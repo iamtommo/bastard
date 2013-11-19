@@ -1,4 +1,4 @@
-package com.bastard.code.block;
+package com.bastard.code.graph.block;
 
 import com.bastard.code.graph.Vertex;
 

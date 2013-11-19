@@ -1,8 +1,5 @@
 package com.bastard.code.graph;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bastard.cls.info.attribute.CodeAttribute;
 import com.bastard.code.block.CodeBlock;
 import com.bastard.instruction.Instruction;
@@ -16,12 +13,10 @@ import com.bastard.instruction.impl.LabelInstruction;
  * of the local method code.
  * @author Shawn Davies<sodxeh@gmail.com>
  */
-public class FlowGraph extends Graph {
+public class FlowGraph extends Graph<CodeBlock> {
 
 	private LabelInstruction[] labels;
 
-	private List<CodeBlock> blocks = new ArrayList<>();
-	
 	public FlowGraph(CodeAttribute code) {
 		super(code);
 		this.labels = new LabelInstruction[code.getInstructionList().size() + 1];
@@ -44,24 +39,30 @@ public class FlowGraph extends Graph {
 	 * is the sink.
 	 */
 	public void createBaseBlocks() {
-		CodeBlock source = new CodeBlock(labels[0], getSink());
+		CodeBlock source = new CodeBlock(labels[0]);
 		source.setTag("SOURCE");
+		
+		addVertex(source);
+		
+		CodeBlock sink = new CodeBlock(getSink());
+		sink.setTag("SINK");
 		
 		LabelInstruction start = next(source.getStart());
 		LabelInstruction end;
-		while((end = next(start)) != null && end != source.getEnd()) {
-			source.addBranch(new CodeBlock(start, end));
-			
+		while((end = next(start)) != null && end != sink.getStart()) {
+			if ((boolean) start.getAttribute("root")) {
+				addVertex(new CodeBlock(start));
+			}
 			start = end;
 		}
-		CodeBlock sink = new CodeBlock(source.getEnd(), source.getEnd());
-		sink.setTag("SINK");
 		
-		blocks.add(source);
-		blocks.add(sink);
+		addVertex(sink); // Add the sink block at the end, rather than when it was created
+						// in an attempt to maintain some order.
 		
+		addEdge(source, sink);
+		addEdge(source, getVertex(1));
 		
-		System.out.println(source);
+		System.out.println(toString());
 	}
 	
 	/**
@@ -93,7 +94,10 @@ public class FlowGraph extends Graph {
 					}
 
 					if (jump.getDestination() < instructions.size()) {// recheck to make sure our branch is still jumping within the code
+						LabelInstruction src = labels[i] = new LabelInstruction(pool, i);
 						LabelInstruction label = labels[jump.getDestination()] = new LabelInstruction(pool, jump.getDestination());
+						
+						src.setAttribute("root", false);
 						label.setAttribute("root", true);
 					} else {
 						instructions.remove(jump);
