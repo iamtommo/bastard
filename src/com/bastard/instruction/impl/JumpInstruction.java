@@ -19,7 +19,7 @@ public class JumpInstruction extends Instruction {
 	/**
 	 * The location to jump to.
 	 */
-	private int jumpLocation;
+	private int dst;
 
 	public JumpInstruction(ConstantPool pool, int opcode) {
 		super(pool, opcode);
@@ -28,9 +28,9 @@ public class JumpInstruction extends Instruction {
 	@Override
 	public JumpInstruction read(ConstantPool pool, ByteBuffer code) {
 		if (getOpcode() == Opcode.GOTO_W.getOpcode() || getOpcode() == Opcode.JSR_W.getOpcode()) {
-			jumpLocation = code.getInt() & 0xFFFF;
+			dst = code.getInt() & 0xFFFF;
 		} else {
-			jumpLocation = code.getShort() & 0xFF;
+			dst = code.getShort() & 0xFF;
 		}
 		return this;
 	}
@@ -41,16 +41,20 @@ public class JumpInstruction extends Instruction {
 		if (opcode == null) {
 			return "JumpInstruction[op="+(getOpcode() & 0xFF)+", null]";
 		}
-		return "JumpInstruction[op=" + opcode.toString() + ", jumpLoc=" + jumpLocation + "]";
+		return "JumpInstruction[op=" + opcode.toString() + ", jumpLoc=" + dst + "]";
 	}
 
-	public int getJumpLocation() {
-		return jumpLocation;
+	public int getDestination() {
+		return this.dst;
 	}
 
 	@Override
 	public Node toNode() {
 		return new JumpNode(this);
+	}
+
+	public void setDestination(int dst) {
+		this.dst = dst;
 	}
 
 

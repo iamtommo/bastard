@@ -75,10 +75,9 @@ public class Stack {
 				stack.roots.put(n, n);
 				stack.root = n;
 			}
-			height++;
 			return n;
 		}
-
+		
 		@Override
 		public Node pop() {
 			Node node = super.pop();
@@ -89,19 +88,14 @@ public class Stack {
 			if (stack.root == node) {
 				stack.root = null;
 			}
-			height--;
 			return node;
-		}
-		
-		public int getHeight() {
-			return height;
 		}
 	}
 
 	/**
 	 * The java stack util.
 	 */
-	private final java.util.Stack<Node> stack = new NodeStack<>(this);
+	private final NodeStack<Node> stack = new NodeStack<>(this);
 	/**
 	 * The list of raw instructions.
 	 */
@@ -114,6 +108,7 @@ public class Stack {
 	 * A mapping of last nodes to their roots.
 	 */
 	private final Map<Node, Node> roots = new HashMap<Node, Node>();
+	private int jumps;
 	
 	public Stack(InstructionList instructions) {
 		this.instructions = instructions;
@@ -129,15 +124,9 @@ public class Stack {
 			Instruction instruction = instructions.get(i);
 
 			if (instruction instanceof BasicInstruction) {
-				boolean isReturn = instruction.toString().contains("RET");
-				
-				if (!stack.isEmpty() && stack.peek() instanceof JumpNode && isReturn) {//simplifies Jump Return to just Return
-					stack.pop();
-				}
-				
 				push(new Node(instructions.getConstantPool(), instruction));
 				
-				if (isReturn) {
+				if (instruction.toString().contains("RET")) {
 					root = null;
 				}
 				continue;
@@ -191,39 +180,17 @@ public class Stack {
 						stack.pop();
 					}
 					
-					push(new JumpNode((JumpInstruction) instruction));
+					JumpNode jump = new JumpNode((JumpInstruction) instruction);
+					
+					push(jump);
 				} else if (name.contains("IF")) {
-					push(new IfNode((JumpInstruction) instruction, stack.pop(), stack.pop()));
+					IfNode jump = new IfNode((JumpInstruction) instruction, stack.pop(), stack.pop());
+					
+					push(jump);
 				}
 				continue;
 			}
 		}
-		
-		for (Node n : stack) {
-			if (n instanceof IfNode) {
-				IfNode ifn = (IfNode) n;
-				ifn.setDestination(ifn.getDestination() - getCollapsedInstructions());
-			}
-		}
-	}
-	
-	/**
-	 * Calculates how many instructions have been collapsed into Nodes
-	 * to be able to resolve code array indexes to stack indexes.
-	 * @return
-	 */
-	public int getCollapsedInstructions() {
-		int collapsed = 1;
-		for (int i = 0; i < stack.size(); i++) {
-			Node n = stack.get(i);
-			if (n instanceof BidirectionalNode) {
-				collapsed += 2;
-			} else if (n instanceof CallMethodNode) {
-				CallMethodNode cmn = (CallMethodNode) n;
-				collapsed += cmn.getParameters().length;
-			}
-		}
-		return collapsed;
 	}
 
 	/**
@@ -291,11 +258,6 @@ public class Stack {
 
 	public Node get(int index) {
 		return stack.get(index);
-	}
-
-
-	public int getHeight() {
-		return ((NodeStack<Node>) stack).getHeight();
 	}
 
 }

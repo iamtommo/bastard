@@ -4,6 +4,7 @@ import com.bastard.code.BidirectionalNode;
 import com.bastard.code.Node;
 import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.JumpInstruction;
+import com.bastard.instruction.impl.LabelInstruction;
 
 /**
  * 
@@ -17,11 +18,11 @@ public class IfNode extends BidirectionalNode {
 	 * TODO: Change this to Node and define by getting the node at JumpInstruction#jumpLocation.
 	 */
 	private int dst;
-	private LabelNode label;
+	private LabelInstruction label;
 	
 	public IfNode(JumpInstruction instruction, Node left, Node right) {
 		super(instruction.getPool(), instruction, left, right);
-		this.dst = instruction.getJumpLocation();
+		this.dst = instruction.getDestination();
 	}
 	
 	public String getComparison() {
@@ -32,11 +33,11 @@ public class IfNode extends BidirectionalNode {
 		return dst;
 	}
 	
-	public LabelNode getLabel() {
+	public LabelInstruction getLabel() {
 		return label;
 	}
 	
-	public void setLabel(LabelNode label) {
+	public void setLabel(LabelInstruction label) {
 		this.label = label;
 	}
 	

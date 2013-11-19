@@ -2,6 +2,7 @@ package com.bastard.code.impl;
 
 import com.bastard.code.Node;
 import com.bastard.instruction.impl.JumpInstruction;
+import com.bastard.instruction.impl.LabelInstruction;
 
 /**
  * 
@@ -15,18 +16,18 @@ public class JumpNode extends Node {
 	 * TODO: Change this to Node and define by getting the node at JumpInstruction#jumpLocation.
 	 */
 	private int dst;
-	private LabelNode label;
+	private LabelInstruction label;
 	
 	public JumpNode(JumpInstruction instruction) {
 		super(null, instruction);
-		this.dst = instruction.getJumpLocation();
+		this.dst = instruction.getDestination();
 	}
 	
-	public LabelNode getLabel() {
+	public LabelInstruction getLabel() {
 		return label;
 	}
 	
-	public void setLabel(LabelNode label) {
+	public void setLabel(LabelInstruction label) {
 		this.label = label;
 	}
 	
@@ -37,5 +38,9 @@ public class JumpNode extends Node {
 	@Override
 	public String code() {
 		return "JumpNode[dst="+dst+", label="+label+", children="+children.size()+"]";
+	}
+
+	public void setDestination(int dst) {
+		this.dst = dst;
 	}
 }

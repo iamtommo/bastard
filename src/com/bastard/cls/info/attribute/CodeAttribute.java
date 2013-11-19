@@ -5,8 +5,8 @@ import java.nio.ByteBuffer;
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.AttributeInfo;
 import com.bastard.code.Stack;
+import com.bastard.code.graph.FlowGraph;
 import com.bastard.code.graph.Graph;
-import com.bastard.code.graph.JumpGraph;
 import com.bastard.instruction.InstructionList;
 import com.bastard.util.Indent;
 
@@ -24,7 +24,7 @@ public class CodeAttribute extends AbstractAttribute {
 
 	@SuppressWarnings("unchecked")
 	private Class<Graph>[] graphs = new Class[] {
-		JumpGraph.class
+		FlowGraph.class
 	};
 	
 	private Stack stack;
@@ -55,17 +55,18 @@ public class CodeAttribute extends AbstractAttribute {
 			attributes[i] = ai;
 		}
 		
-		stack = new Stack(instructionList);
-		
 		for (Class<Graph> cls : graphs) {
 			try {
-				Graph graph = (Graph) cls.getConstructor(CodeAttribute.class, Stack.class).newInstance(this, stack);
+				Graph graph = (Graph) cls.getConstructor(CodeAttribute.class).newInstance(this);
 				
 				graph.construct();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		
+		stack = new Stack(instructionList);
+		
 		return this;
 	}
 	
