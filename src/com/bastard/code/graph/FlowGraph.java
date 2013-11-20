@@ -4,6 +4,7 @@ import com.bastard.cls.info.attribute.CodeAttribute;
 import com.bastard.code.graph.block.CodeBlock;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
+import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.JumpInstruction;
 import com.bastard.instruction.impl.LabelInstruction;
 
@@ -79,7 +80,15 @@ public class FlowGraph extends Graph<CodeBlock> {
 			Instruction insn = instructions.get(i);
 			
 			list.add(insn);
-			if (insn instanceof JumpInstruction) {
+			if (insn instanceof JumpInstruction
+					|| insn.getOpcode() == Opcode.ARETURN.getOpcode()
+					|| insn.getOpcode() == Opcode.RETURN.getOpcode()
+					|| insn.getOpcode() == Opcode.RET.getOpcode()
+					|| insn.getOpcode() == Opcode.DRETURN.getOpcode()
+					|| insn.getOpcode() == Opcode.FRETURN.getOpcode()
+					|| insn.getOpcode() == Opcode.IRETURN.getOpcode()
+					|| insn.getOpcode() == Opcode.LRETURN.getOpcode()) {
+				//TODO aggregate them stupid fucking return ops into a ReturnInstruction encapsulating them?
 				return list;
 			}
 		}
