@@ -35,7 +35,7 @@ public class FlowGraph extends Graph<CodeBlock> {
 	 * and endLabel.pc.
 	 * 
 	 * Once one block has been created, endLabel.pc becomes startLabel.pc and 
-	 * the next availiable label becomes the new endLabel, until the endLabel 
+	 * the next available label becomes the new endLabel, until the endLabel 
 	 * is the sink.
 	 */
 	public void createBaseBlocks() {
@@ -71,12 +71,8 @@ public class FlowGraph extends Graph<CodeBlock> {
 			
 			index += sliced.size();
 			
-			for (Instruction insn : sliced) {
-				System.out.println(insn);
-			}
-			System.out.println();
+			block.setInstructions(sliced);
 		}
-		System.out.println(toString());
 	}
 
 	public InstructionList slice(InstructionList instructions, int start) {

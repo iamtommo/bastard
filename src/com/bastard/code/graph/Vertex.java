@@ -3,12 +3,14 @@ package com.bastard.code.graph;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.bastard.util.Indent;
+
 /**
  * Represents a vertex on any graph.
  * @author Shawn Davies<sodxeh@gmail.com>
  *
  */
-public class Vertex {
+public abstract class Vertex {
 
 	/**
 	 * The set of nodes that increase this vertex's in degree.
@@ -19,6 +21,7 @@ public class Vertex {
 	 */
 	protected Set<Vertex> successors = new HashSet<Vertex>();
 	
+	public abstract String toString();
 	
 	/**
 	 * Does this vertex succeed the given vertex?
@@ -37,4 +40,9 @@ public class Vertex {
 	public boolean precedes(Vertex vertex) {
 		return successors.contains(vertex);
 	}
+	
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + toString());
+	}
+	
 }

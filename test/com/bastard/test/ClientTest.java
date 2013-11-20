@@ -28,7 +28,6 @@ public class ClientTest {
 
 				ClassFile cls = new ClassFile(entry.getName(), tmp);
 				cls.read();
-//				System.out.println(cls.getConstantPool().getEntries()[847].toString());
 			}
 		}
 	}
