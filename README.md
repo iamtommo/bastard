@@ -1,6 +1,6 @@
 BASTARD
 =======
-BASTARD stands for Bytecode Abstract Syntax Tree and Resursive Data.
+BASTARD stands for Bytecode Abstract Syntax Tree and Redundancy Disseminator
 It is a free, open-source bytecode manipulation library licensed under the GNU LGPL.
 
 ### How to use
