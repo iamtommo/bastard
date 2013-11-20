@@ -1,38 +1,16 @@
 
 public class Test {
 
-	private int number = 7;
-
-	public Test() {
-		dostuff();
-	}
-
-
-	private void dostuff1() {
-
-	}
-
-	private void dostuff2() {
-
-	}
-
-	private void dostuff3() {
-
-	}
-
+	public int number;
 	public static void main(String[] args) {
-		new Test();
 	}
-
-	private void dostuff() {
+	
+	public void something() {
 		if (number == 7) {
-			dostuff1();
+			return;
 		}
-
-		if (number != 8) {
-			dostuff3();
-		} else if (number != 9) {
-			dostuff2();
+		if (number != 7) {
+			number = 7;
 		}
 	}
 

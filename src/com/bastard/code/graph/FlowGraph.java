@@ -1,7 +1,7 @@
 package com.bastard.code.graph;
 
 import com.bastard.cls.info.attribute.CodeAttribute;
-import com.bastard.code.block.CodeBlock;
+import com.bastard.code.graph.block.CodeBlock;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
 import com.bastard.instruction.impl.JumpInstruction;
@@ -27,7 +27,7 @@ public class FlowGraph extends Graph<CodeBlock> {
 		createLabels();
 		createBaseBlocks();
 	}
-	
+
 	/**
 	 * Creates basic code blocks using the labels we previously defined.
 	 * 
@@ -41,30 +41,56 @@ public class FlowGraph extends Graph<CodeBlock> {
 	public void createBaseBlocks() {
 		CodeBlock source = new CodeBlock(labels[0]);
 		source.setTag("SOURCE");
-		
+
 		addVertex(source);
-		
+
 		CodeBlock sink = new CodeBlock(getSink());
 		sink.setTag("SINK");
-		
+
 		LabelInstruction start = next(source.getStart());
 		LabelInstruction end;
 		while((end = next(start)) != null && end != sink.getStart()) {
 			if ((boolean) start.getAttribute("root")) {
-				addVertex(new CodeBlock(start));
+				CodeBlock block = new CodeBlock(start);
+				addVertex(block);
 			}
 			start = end;
 		}
-		
+
 		addVertex(sink); // Add the sink block at the end, rather than when it was created
-						// in an attempt to maintain some order.
-		
+		// in an attempt to maintain some order.
+
 		addEdge(source, sink);
 		addEdge(source, getVertex(1));
-		
+
+		for (CodeBlock block : vertices) {
+			if (block == sink) {
+				break;
+			}
+			CodeBlock next = vertices.get(vertices.indexOf(block) + 1);
+			
+			System.out.println(block);
+			for (Instruction insn : slice(code.getInstructionList(), block.getStart().getStartPc())) {
+				System.out.println(insn);
+			}
+			System.out.println();
+		}
 		System.out.println(toString());
 	}
-	
+
+	public InstructionList slice(InstructionList instructions, int start) {
+		InstructionList list = new InstructionList();
+		for (int i = start; i < instructions.size(); i++) {
+			Instruction insn = instructions.get(i);
+			
+			list.add(insn);
+			if (insn instanceof JumpInstruction) {
+				return list;
+			}
+		}
+		return list;
+	}
+
 	/**
 	 * Creates the basic labels for this method (root and sink), and labels
 	 * for every jump in between.
@@ -74,7 +100,7 @@ public class FlowGraph extends Graph<CodeBlock> {
 	public void createLabels() {
 		LabelInstruction root = labels[0] = new LabelInstruction(pool, 0);
 		root.setAttribute("root", true);
-		
+
 		InstructionList instructions = code.getInstructionList();
 		for (int i = 0; i < instructions.size(); i++) {
 			Instruction insn = instructions.get(i);
@@ -89,14 +115,12 @@ public class FlowGraph extends Graph<CodeBlock> {
 					if (target instanceof JumpInstruction) { // branch Jump->Jump->Target to Jump->Target
 						jump.setDestination(((JumpInstruction) target).getDestination());
 						instructions.remove(target);
-					} else if (target.toString().contains("RET")) {// branch Jump -> return to Return
-						instructions.set(i, target);
 					}
 
 					if (jump.getDestination() < instructions.size()) {// recheck to make sure our branch is still jumping within the code
 						LabelInstruction src = labels[i] = new LabelInstruction(pool, i);
 						LabelInstruction label = labels[jump.getDestination()] = new LabelInstruction(pool, jump.getDestination());
-						
+
 						src.setAttribute("root", false);
 						label.setAttribute("root", true);
 					} else {
@@ -111,14 +135,14 @@ public class FlowGraph extends Graph<CodeBlock> {
 		LabelInstruction sink = labels[instructions.size()] = new LabelInstruction(pool, instructions.size());
 		sink.setAttribute("root", true);
 		sink.setAttribute("sink", true);
-		
+
 		for (LabelInstruction label : labels) {
 			if (label != null) {
 				instructions.add(label);
 			}
 		}
 	}
-	
+
 	public LabelInstruction next(LabelInstruction start) {
 		for (int i = start.getStartPc() + 1; i < labels.length; i++) {
 			if (labels[i] != null) {
@@ -127,13 +151,13 @@ public class FlowGraph extends Graph<CodeBlock> {
 		}
 		return null;
 	}
-	
+
 	public LabelInstruction getSink() {
 		for (LabelInstruction label : labels) {
 			if (label == null) {
 				continue;
 			}
-			
+
 			Object sink = label.getAttribute("sink");
 			if (sink != null && (boolean) sink) {
 				return label;
@@ -141,5 +165,5 @@ public class FlowGraph extends Graph<CodeBlock> {
 		}
 		return null;
 	}
-	
+
 }
