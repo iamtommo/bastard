@@ -23,7 +23,7 @@ public class CodeAttribute extends AbstractAttribute {
 	private InstructionList instructionList = new InstructionList();
 
 	@SuppressWarnings("unchecked")
-	private Class<Graph>[] graphs = new Class[] {
+	private Class<Graph<?>>[] graphs = new Class[] {
 		FlowGraph.class
 	};
 	
@@ -55,9 +55,9 @@ public class CodeAttribute extends AbstractAttribute {
 			attributes[i] = ai;
 		}
 		
-		for (Class<Graph> cls : graphs) {
+		for (Class<Graph<?>> cls : graphs) {
 			try {
-				Graph graph = (Graph) cls.getConstructor(CodeAttribute.class).newInstance(this);
+				Graph<?> graph = (Graph<?>) cls.getConstructor(CodeAttribute.class).newInstance(this);
 				
 				graph.construct();
 			} catch (Exception e) {
