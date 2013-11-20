@@ -64,13 +64,15 @@ public class FlowGraph extends Graph<CodeBlock> {
 		addEdge(source, sink);
 		addEdge(source, getVertex(1));
 
+		int index = 0;
 		for (CodeBlock block : vertices) {
-			if (block == sink) {
-				break;
-			}
-			//CodeBlock next = vertices.get(vertices.indexOf(block) + 1);
+			System.out.println(block);
 			
-			block.setInstructions(slice(code.getInstructionList(), block.getStart().getStartPc()));
+			InstructionList sliced = slice(code.getInstructionList(), index);
+			
+			index += sliced.size();
+			
+			block.setInstructions(sliced);
 		}
 	}
 

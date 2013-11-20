@@ -60,7 +60,6 @@ public class CodeAttribute extends AbstractAttribute {
 			try {
 				Class<Graph<?>> cls = graphs[i];
 				Graph<?> graph = graphInstances[i] = (Graph<?>) cls.getConstructor(CodeAttribute.class).newInstance(this);
-				
 				graph.construct();
 			} catch (Exception e) {
 				e.printStackTrace();
