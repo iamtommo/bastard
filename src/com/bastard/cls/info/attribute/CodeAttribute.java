@@ -23,9 +23,10 @@ public class CodeAttribute extends AbstractAttribute {
 	private InstructionList instructionList = new InstructionList();
 
 	@SuppressWarnings("unchecked")
-	private Class<Graph>[] graphs = new Class[] {
+	private Class<Graph<?>>[] graphs = new Class[] {
 		FlowGraph.class
 	};
+	private Graph<?>[] graphInstances = new Graph<?>[graphs.length];
 	
 	private Stack stack;
 	
@@ -55,9 +56,10 @@ public class CodeAttribute extends AbstractAttribute {
 			attributes[i] = ai;
 		}
 		
-		for (Class<Graph> cls : graphs) {
+		for (int i = 0; i < graphs.length; i++) {
 			try {
-				Graph graph = (Graph) cls.getConstructor(CodeAttribute.class).newInstance(this);
+				Class<Graph<?>> cls = graphs[i];
+				Graph<?> graph = graphInstances[i] = (Graph<?>) cls.getConstructor(CodeAttribute.class).newInstance(this);
 				
 				graph.construct();
 			} catch (Exception e) {
@@ -84,7 +86,11 @@ public class CodeAttribute extends AbstractAttribute {
 		
 		instructionList.print(indentations + 1);
 		
-		stack.print(indentations + 1);
+		for (Graph<?> graph : graphInstances) {
+			graph.print(indentations + 1);
+		}
+		
+		//stack.print(indentations + 1);
 	}
 	
 	@Override

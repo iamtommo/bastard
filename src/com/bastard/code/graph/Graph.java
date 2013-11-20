@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.cls.info.attribute.CodeAttribute;
+import com.bastard.util.Indent;
 
 /**
  * A graph with a list of vertices.
@@ -51,31 +52,20 @@ public abstract class Graph<T extends Vertex> {
 		return vertices.get(index);
 	}
 	
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + toString());
+		System.out.println(Indent.$(indentations) + "{");
+		for (T vertex : vertices) {
+			vertex.print(indentations + 1);
+		}
+		System.out.println(Indent.$(indentations) + "}");
+	}
+	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append("Graph[size="+vertices.size()+"]\n{\n");
-		for (T vertex : vertices) {
-			sb.append("\tVertex[index="+vertices.indexOf(vertex)+", degrees[in="+vertex.predecessors.size()+", out="+vertex.successors.size()+"]]\n\t{\n");
-			sb.append("\t\tSuccessors[size="+vertex.successors.size()+"]\n\t\t{\n");
-			
-			for (Vertex successor : vertex.successors) {
-				sb.append("\t\t\tVertex[degrees[in="+successor.predecessors.size()+", out="+successor.successors.size()+"]]\n");
-			}
-			sb.append("\t\t}\n");
-			
-			sb.append("\t\tPredecessors[size="+vertex.predecessors.size()+"]\n\t\t{\n");
-			for (Vertex predecessor : vertex.predecessors) {
-				sb.append("\t\t\tVertex[degrees[in="+predecessor.predecessors.size()+", out="+predecessor.successors.size()+"]]\n");
-			}
-			sb.append("\t\t}\n");
-			
-			sb.append("\t}\n");
-		}
-		sb.append("}\n");
-		return sb.toString();
+		return "Graph[size=" + vertices.size() + "]";
 	}
 	
 	public abstract void construct();
+	
 }
