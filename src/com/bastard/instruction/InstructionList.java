@@ -64,5 +64,9 @@ public class InstructionList extends LinkedList<Instruction> {
 	public ConstantPool getConstantPool() {
 		return constantPool;
 	}
+	
+	public void setConstantPool(ConstantPool pool) {
+		this.constantPool = pool;
+	}
 
 }

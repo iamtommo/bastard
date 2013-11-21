@@ -1,9 +1,6 @@
 package com.bastard.code.graph.block;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.bastard.code.Stack;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.InstructionList;
 import com.bastard.instruction.impl.LabelInstruction;
@@ -13,56 +10,62 @@ import com.bastard.util.Indent;
  * Represents a set of instructions in a code block.
  * @author Shawn Davies<sodxeh@gmail.com>
  */
-public class CodeBlock extends Block {
+public class CodeBlock extends Block<LabelInstruction> {
 
-	private InstructionList instructions;
-	private LabelInstruction start;
+	private InstructionList scope;
+	private LabelInstruction label;
 	private String tag = "none";
+	private Stack stack;
 	
-	private List<CodeBlock> branches = new ArrayList<>();
+	@Override
+	public void print(int indentations) {
+		System.out.println(Indent.$(indentations) + toString());
+		
+		if (scope != null) {
+			for (Instruction insn : scope) {
+				insn.print(indentations + 1);
+			}
+//			stack.print(indentations);
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return "CodeBlock[tag="+tag+", label="+label+", degrees=[in="+predecessors.size()+", out="+successors.size()+"]]";
+	}
 
-	public CodeBlock(LabelInstruction start) {
-		this.start = start;
+	public InstructionList getScope() {
+		return scope;
+	}
+	
+	public LabelInstruction getLabel() {
+		return label;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public Stack getStack() {
+		return stack;
+	}
+
+	public CodeBlock(LabelInstruction label) {
+		this.label = label;
 	}
 	
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
 
-	public LabelInstruction getStart() {
-		return start;
+	public void setScope(InstructionList scope) {
+		this.scope = scope;
+//		this.stack = new Stack(scope);
 	}
 
-	public void addBranch(CodeBlock block) {
-		branches.add(block);
-	}
-	
 	@Override
-	public void print(int indentations) {
-		System.out.println(Indent.$(indentations) + toString());
-		
-		if (instructions != null) {
-			for (Instruction insn : instructions) {
-				insn.print(indentations + 1);
-			}
-		}
-		
-		for (CodeBlock block : branches) {
-			block.print(indentations + 1);
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return "CodeBlock[tag="+tag+", start="+start+", branches="+Arrays.toString(branches.toArray(new CodeBlock[0]))+"]";
-	}
-
-	public InstructionList getInstructions() {
-		return instructions;
-	}
-
-	public void setInstructions(InstructionList instructions) {
-		this.instructions = instructions;
+	public LabelInstruction getKey() {
+		return label;
 	}
 	
 }

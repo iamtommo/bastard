@@ -7,6 +7,6 @@ import com.bastard.code.graph.Vertex;
  * @author tommo
  *
  */
-public abstract class Block extends Vertex {
+public abstract class Block<K> extends Vertex<K> {
 
 }

@@ -7,6 +7,7 @@ import com.bastard.instruction.InstructionList;
 import com.bastard.instruction.Opcode;
 import com.bastard.instruction.impl.JumpInstruction;
 import com.bastard.instruction.impl.LabelInstruction;
+import com.bastard.instruction.impl.ThrowInstruction;
 
 /**
  * A representation of the program's control flow. 
@@ -14,9 +15,11 @@ import com.bastard.instruction.impl.LabelInstruction;
  * of the local method code.
  * @author Shawn Davies<sodxeh@gmail.com>
  */
-public class FlowGraph extends Graph<CodeBlock> {
+public class FlowGraph extends Graph<LabelInstruction, CodeBlock> {
 
 	private LabelInstruction[] labels;
+	private CodeBlock sink;
+	private CodeBlock source;
 
 	public FlowGraph(CodeAttribute code) {
 		super(code);
@@ -40,59 +43,104 @@ public class FlowGraph extends Graph<CodeBlock> {
 	 * is the sink.
 	 */
 	public void createBaseBlocks() {
-		CodeBlock source = new CodeBlock(labels[0]);
+		source = new CodeBlock(labels[0]);
 		source.setTag("SOURCE");
+		source.setScope(code.getInstructionList());
 
-		addVertex(source);
+		addVertex(labels[0], source);
 
-		CodeBlock sink = new CodeBlock(getSink());
+		sink = new CodeBlock(getSink());
 		sink.setTag("SINK");
 
-		LabelInstruction start = next(source.getStart());
-		LabelInstruction end;
-		while((end = next(start)) != null && end != sink.getStart()) {
-			if ((boolean) start.getAttribute("root")) {
-				CodeBlock block = new CodeBlock(start);
-				addVertex(block);
+		CodeBlock first = null;
+
+		for (LabelInstruction label : labels) {
+			if (label != null && label != source.getKey() && (boolean) label.getAttribute("root")) {
+
+				CodeBlock block = new CodeBlock(label);
+				addVertex(label, block);
+
+				if (first == null) {
+					first = block;
+				}
 			}
-			start = end;
 		}
 
-		addVertex(sink); // Add the sink block at the end, rather than when it was created
+		addVertex(sink.getKey(), sink); // Add the sink block at the end, rather than when it was created
 		// in an attempt to maintain some order.
 
 		addEdge(source, sink);
-		addEdge(source, getVertex(1));
+		addEdge(source, first);
 
-		int index = 0;
-		for (CodeBlock block : vertices) {
-			System.out.println(block);
-			
-			InstructionList sliced = slice(code.getInstructionList(), index);
-			
-			index += sliced.size();
-			
-			block.setInstructions(sliced);
+		for (CodeBlock block : vertices.values()) {
+			if (block == sink) {
+				continue;
+			}
+			block.setScope(slice(source.getScope(), block));
 		}
 	}
 
-	public InstructionList slice(InstructionList instructions, int start) {
+	/**
+	 * Slices the raw code instructions up into chunks of instructions
+	 * that represent the set of instructions within a code block.
+	 * @param instructions The instructions list.
+	 * @param block The code block to slice instructions for.
+	 * @return The list of sliced instructions.
+	 */
+	public InstructionList slice(InstructionList instructions, CodeBlock block) {
 		InstructionList list = new InstructionList();
-		for (int i = start; i < instructions.size(); i++) {
+
+		list.setConstantPool(code.getInstructionList().getConstantPool());
+		for (int i = block.getKey().getStartPc(); i < instructions.size(); i++) {
 			Instruction insn = instructions.get(i);
-			
-			list.add(insn);
-			if (insn instanceof JumpInstruction
-					|| insn.getOpcode() == Opcode.ARETURN.getOpcode()
-					|| insn.getOpcode() == Opcode.RETURN.getOpcode()
-					|| insn.getOpcode() == Opcode.RET.getOpcode()
-					|| insn.getOpcode() == Opcode.DRETURN.getOpcode()
-					|| insn.getOpcode() == Opcode.FRETURN.getOpcode()
-					|| insn.getOpcode() == Opcode.IRETURN.getOpcode()
-					|| insn.getOpcode() == Opcode.LRETURN.getOpcode()) {
-				//TODO aggregate them stupid fucking return ops into a ReturnInstruction encapsulating them?
+
+			if (insn instanceof JumpInstruction) {
+				CodeBlock target = getVertex(labels[((JumpInstruction) insn).getDestination()]);
+				addEdge(block, target);
+				
+				if (insn.toString().contains("IF")) {
+					for (int x = block.getKey().getStartPc() + 1; x < instructions.size(); x++) {
+						LabelInstruction label = labels[x];
+
+						if (label == null) {
+							continue;
+						}
+						
+						if ((boolean) label.getAttribute("root")) {
+							CodeBlock inverse = getVertex(label);
+							
+							addEdge(block, inverse);
+						}
+						break;
+					}
+				}
+				
+				list.add(insn);
 				return list;
 			}
+			
+			if (insn instanceof LabelInstruction) {
+				LabelInstruction label = (LabelInstruction) insn;
+
+				if ((boolean) label.getAttribute("root")) {
+					CodeBlock target = getVertex(label);
+
+					JumpInstruction jump = new JumpInstruction(pool, Opcode.GOTO.getOpcode());
+					jump.setDestination(label.getStartPc());
+
+					list.add(jump);
+					addEdge(block, target);
+					return list;
+				}
+			}
+
+			if (insn.toString().contains("RET") || insn instanceof ThrowInstruction) {// TODO support for RET opcode for subroutines.
+				list.add(insn);
+				addEdge(block, sink);
+				return list;
+			}
+			
+			list.add(insn);
 		}
 		return list;
 	}
@@ -147,15 +195,6 @@ public class FlowGraph extends Graph<CodeBlock> {
 				instructions.add(label);
 			}
 		}
-	}
-
-	public LabelInstruction next(LabelInstruction start) {
-		for (int i = start.getStartPc() + 1; i < labels.length; i++) {
-			if (labels[i] != null) {
-				return labels[i];
-			}
-		}
-		return null;
 	}
 
 	public LabelInstruction getSink() {

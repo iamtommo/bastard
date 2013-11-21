@@ -10,16 +10,16 @@ import com.bastard.util.Indent;
  * @author Shawn Davies<sodxeh@gmail.com>
  *
  */
-public abstract class Vertex {
+public abstract class Vertex<K> {
 
 	/**
 	 * The set of nodes that increase this vertex's in degree.
 	 */
-	protected Set<Vertex> predecessors = new HashSet<Vertex>();
+	protected Set<Vertex<K>> predecessors = new HashSet<Vertex<K>>();
 	/**
 	 * The set of nodes that increase this vertex's out degree.
 	 */
-	protected Set<Vertex> successors = new HashSet<Vertex>();
+	protected Set<Vertex<K>> successors = new HashSet<Vertex<K>>();
 	
 	public abstract String toString();
 	
@@ -28,7 +28,7 @@ public abstract class Vertex {
 	 * @param vertex The vertex.
 	 * @return {@code true} if this vertex succeeds the given vertex.
 	 */
-	public boolean succeeds(Vertex vertex) {
+	public boolean succeeds(Vertex<K> vertex) {
 		return predecessors.contains(vertex);
 	}
 	
@@ -37,12 +37,14 @@ public abstract class Vertex {
 	 * @param vertex The vertex.
 	 * @return {@code true} if this vertex precedes the given vertex.
 	 */
-	public boolean precedes(Vertex vertex) {
+	public boolean precedes(Vertex<K> vertex) {
 		return successors.contains(vertex);
 	}
 	
 	public void print(int indentations) {
 		System.out.println(Indent.$(indentations) + toString());
 	}
+
+	public abstract K getKey();
 	
 }
