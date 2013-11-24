@@ -17,6 +17,8 @@ public class CodeBlock extends Block<LabelInstruction> {
 	private String tag;
 	private Stack stack;
 
+	private boolean visited;
+	
 	@Override
 	public void print(int indentations) {
 		System.out.println(Indent.$(indentations) + toString());
@@ -38,6 +40,7 @@ public class CodeBlock extends Block<LabelInstruction> {
 			}
 			System.out.println(Indent.$(indentations + 1) + "end");
 			System.out.println();
+
 			stack.print(indentations + 1);
 		}
 		System.out.println(Indent.$(indentations) + "end");
@@ -71,12 +74,24 @@ public class CodeBlock extends Block<LabelInstruction> {
 
 	public void setScope(InstructionList scope) {
 		this.scope = scope;
+		update();
+	}
+
+	public void update() {
 		this.stack = new Stack(scope);
 	}
 
 	@Override
 	public LabelInstruction getKey() {
 		return label;
+	}
+
+	public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
 	}
 
 }

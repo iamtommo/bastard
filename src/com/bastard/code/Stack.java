@@ -1,6 +1,6 @@
 package com.bastard.code;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +104,7 @@ public class Stack {
 	/**
 	 * A mapping of last nodes to their roots.
 	 */
-	private final Map<Node, Node> roots = new HashMap<Node, Node>();
+	private final Map<Node, Node> roots = new LinkedHashMap<Node, Node>();
 
 	public Stack(InstructionList instructions) {
 		this.instructions = instructions;
@@ -182,7 +182,7 @@ public class Stack {
 				} else if (name.contains("IF")) {
 					Node jump = null;
 					
-					if (name.contains("CMP") || name.contains("NE") || name.contains("EQ")) {
+					if (name.contains("CMP")) {
 						jump = new IfCmpNode((JumpInstruction) instruction, stack.pop(), stack.pop());
 					} else {
 						jump = new IfSingleNode((JumpInstruction) instruction, stack.pop());

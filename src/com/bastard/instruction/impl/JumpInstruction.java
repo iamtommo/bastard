@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import com.bastard.cls.cpool.ConstantPool;
 import com.bastard.code.Node;
+import com.bastard.code.graph.block.CodeBlock;
 import com.bastard.code.impl.JumpNode;
 import com.bastard.instruction.Instruction;
 import com.bastard.instruction.Opcode;
@@ -12,14 +13,22 @@ import com.bastard.instruction.Opcode;
  * An instruction which can jump to another location.
  * Opcodes: GOTO, JSR, IF_ICOMPNE
  * @author Tommo
- *
+ * @author Shawn Davies<sodxeh@gmail.com>
  */
 public class JumpInstruction extends Instruction {
 
 	/**
-	 * The location to jump to.
+	 * The destination in the code array of this instruction.
 	 */
 	private int dst;
+	/**
+	 * The block which holds the target instruction.
+	 */
+	private CodeBlock targetBlock;
+	/**
+	 * The destination within the target block.
+	 */
+	private int targetDst;
 
 	public JumpInstruction(ConstantPool pool, int opcode) {
 		super(pool, opcode);
@@ -41,11 +50,18 @@ public class JumpInstruction extends Instruction {
 		if (opcode == null) {
 			return "JumpInstruction[op="+(getOpcode() & 0xFF)+", null]";
 		}
-		return "JumpInstruction[op=" + opcode.toString() + ", jumpLoc=" + dst + "]";
+		if (targetBlock != null) {
+			return "JumpInstruction[op=" + opcode.toString() + ", targetBlock="+targetBlock.getTag()+", destinations=[code="+dst+", target="+targetDst+"]]";
+		}
+		return "JumpInstruction[op=" + opcode.toString() + ", dst=" + dst + "]";
 	}
 
 	public int getDestination() {
 		return this.dst;
+	}
+	
+	public int getTargetDestination() {
+		return this.targetDst;
 	}
 
 	@Override
@@ -55,6 +71,18 @@ public class JumpInstruction extends Instruction {
 
 	public void setDestination(int dst) {
 		this.dst = dst;
+	}
+
+	public CodeBlock getTargetBlock() {
+		return targetBlock;
+	}
+
+	public void setTargetBlock(CodeBlock block) {
+		this.targetBlock = block;
+	}
+
+	public void setTargetDestination(int dst) {
+		this.targetDst = dst;
 	}
 
 
