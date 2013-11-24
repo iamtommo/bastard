@@ -8,7 +8,8 @@ import com.bastard.code.impl.ArithmeticNode;
 import com.bastard.code.impl.CallMethodNode;
 import com.bastard.code.impl.CastNode;
 import com.bastard.code.impl.FieldNode;
-import com.bastard.code.impl.IfNode;
+import com.bastard.code.impl.IfCmpNode;
+import com.bastard.code.impl.IfSingleNode;
 import com.bastard.code.impl.JumpNode;
 import com.bastard.code.impl.LdcNode;
 import com.bastard.code.impl.LocalVariableNode;
@@ -56,10 +57,6 @@ public class Stack {
 		 * The base stack.
 		 */
 		private Stack stack;
-		/**
-		 * The stack height.
-		 */
-		private int height = 0;
 
 		public NodeStack(Stack stack) {
 			super();
@@ -77,7 +74,7 @@ public class Stack {
 			}
 			return n;
 		}
-		
+
 		@Override
 		public Node pop() {
 			Node node = super.pop();
@@ -108,8 +105,7 @@ public class Stack {
 	 * A mapping of last nodes to their roots.
 	 */
 	private final Map<Node, Node> roots = new HashMap<Node, Node>();
-	private int jumps;
-	
+
 	public Stack(InstructionList instructions) {
 		this.instructions = instructions;
 		construct();
@@ -125,7 +121,7 @@ public class Stack {
 
 			if (instruction instanceof BasicInstruction) {
 				push(new Node(instructions.getConstantPool(), instruction));
-				
+
 				if (instruction.toString().contains("RET")) {
 					root = null;
 				}
@@ -150,7 +146,7 @@ public class Stack {
 				push(collapseMethod(new MethodNode(instructions.getConstantPool(), (MethodInstruction) instruction)));
 				continue;
 			}
-			
+
 			if (instruction instanceof LdcInstruction) {
 				push(new LdcNode(instructions.getConstantPool(), (LdcInstruction) instruction));
 				continue;
@@ -165,7 +161,7 @@ public class Stack {
 				push(new CastNode(instructions.getConstantPool(), instruction.toNode(), stack.pop(), stack.pop()));
 				continue;
 			}
-			
+
 			if (instruction instanceof ArithmeticInstruction) {
 				push(new ArithmeticNode(instruction, stack.pop(), stack.pop()));
 				continue;
@@ -175,16 +171,22 @@ public class Stack {
 				String name = Opcode.valueOf(instruction.getOpcode() & 0xFF).toString();
 
 				if (name.contains("GOTO") || name.contains("JSR")) {
-					
+
 					if (!stack.isEmpty() && stack.peek() instanceof JumpNode) {// simplifies redundant jump nodes (jumping to another jump node). 
 						stack.pop();
 					}
-					
+
 					JumpNode jump = new JumpNode((JumpInstruction) instruction);
-					
+
 					push(jump);
 				} else if (name.contains("IF")) {
-					IfNode jump = new IfNode((JumpInstruction) instruction, stack.pop(), stack.pop());
+					Node jump = null;
+					
+					if (name.contains("CMP") || name.contains("NE") || name.contains("EQ")) {
+						jump = new IfCmpNode((JumpInstruction) instruction, stack.pop(), stack.pop());
+					} else {
+						jump = new IfSingleNode((JumpInstruction) instruction, stack.pop());
+					}
 					
 					push(jump);
 				}
@@ -215,7 +217,7 @@ public class Stack {
 	 */
 	public void push(Node node) {
 		stack.push(node);
-		
+
 		if (root != node && node.getParent() == null) {
 			root.addChild(node);
 		}
@@ -226,21 +228,18 @@ public class Stack {
 	 */
 	public void print(int indentations) {
 		System.out.println(Indent.$(indentations) + toString());
-		System.out.println(Indent.$(indentations) + "{");
 		for (Node node : stack) {
 			if (roots.containsValue(node)) {
-				System.out.println(Indent.$(indentations + 1) + "[ROOT]"+roots.get(node));
-				System.out.println(Indent.$(indentations + 1) + "{");
+				System.out.println(Indent.$(indentations + 1) + "[ROOT] "+roots.get(node));
 
 				for (Node child : roots.get(node).children) {
-					System.out.println(Indent.$(indentations + 2) + "" + roots.get(node).children.indexOf(child) + ": " + child.toString());
+					System.out.println(Indent.$(indentations + 2) + "child " + roots.get(node).children.indexOf(child) + ": " + child.toString());
 				}
-				System.out.println(Indent.$(indentations + 1) + "}");
 			}
 		}
-		System.out.println(Indent.$(indentations) + "}");
+		System.out.println(Indent.$(indentations) + "end");
 	}
-	
+
 	public int size() {
 		return stack.size();
 	}

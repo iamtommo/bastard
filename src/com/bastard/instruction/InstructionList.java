@@ -10,6 +10,7 @@ import com.bastard.util.Indent;
 /**
  * The bytecode instruction list.
  * @author Tommo
+ * @author Shawn Davies<sodxeh@gmail.com>
  *
  */
 @SuppressWarnings("serial")
@@ -59,6 +60,27 @@ public class InstructionList extends LinkedList<Instruction> {
 			System.out.print(Indent.$(indentations) + "" + i + ": ");
 			insn.print(0);
 		}
+	}
+	
+	public InstructionList subList(int start, int end) {
+		InstructionList list = new InstructionList();
+		
+		list.addAll(super.subList(start, end));
+		list.setConstantPool(constantPool);
+		return list;
+	}
+	
+	public InstructionList slice(InstructionList list) {
+		super.removeAll(list);
+		return list;
+	}
+	
+	public InstructionList copy() {
+		InstructionList copy = new InstructionList();
+		copy.code = code;
+		copy.constantPool = constantPool;
+		copy.addAll(this);
+		return copy;
 	}
 
 	public ConstantPool getConstantPool() {
