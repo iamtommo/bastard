@@ -285,7 +285,6 @@ public class FlowGraph extends Graph<LabelInstruction, CodeBlock> {
 			writer.write(sb.toString());
 			writer.close();
 		}
-		System.exit(0);
 	}
 
 	public void spline(CodeBlock block, StringBuilder sb) {
